@@ -1,13 +1,17 @@
 package com.algaworks.algafood.di.modelo;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 @Getter
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class Cliente {
+    @NonNull
     private String nome;
+    @NonNull
     private String email;
+    @NonNull
     private String telefone;
     private boolean ativo;
 
