@@ -1,10 +1,6 @@
-package com.algaworks.algafood.infrastructure.cozinha;
-
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+package com.algaworks.algafood.port.adapter.persistence.model;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Entity
 @Table(name = "cozinha")

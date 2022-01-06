@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.cozinha;
+package com.algaworks.algafood.domain.model.cozinha;
 
 import com.algaworks.algafood.domain.exception.NegocioException;
 

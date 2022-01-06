@@ -1,4 +1,4 @@
-package com.algaworks.algafood.infrastructure.restaurante;
+package com.algaworks.algafood.port.adapter.persistence.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-public class Restaurante {
+@Table(name = "Restaurante")
+public class RestauranteModel {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue( strategy = GenerationType.IDENTITY)

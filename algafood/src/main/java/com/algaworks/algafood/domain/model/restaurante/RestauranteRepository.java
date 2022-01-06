@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.restaurante;
+package com.algaworks.algafood.domain.model.restaurante;
 
 import java.util.List;
 
