@@ -1,9 +1,11 @@
 package com.algaworks.algafood.domain.model.cozinha;
 
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.util.StringUtils;
 
 @Getter
+@ToString
 public class Cozinha {
     private String nome;
 

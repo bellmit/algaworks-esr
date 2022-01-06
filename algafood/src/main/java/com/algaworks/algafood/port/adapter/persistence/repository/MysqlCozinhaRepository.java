@@ -1,5 +1,6 @@
 package com.algaworks.algafood.port.adapter.persistence.repository;
 
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.cozinha.Cozinha;
 import com.algaworks.algafood.domain.model.cozinha.CozinhaRepository;
 import com.algaworks.algafood.port.adapter.persistence.model.CozinhaModel;
@@ -34,6 +35,19 @@ public class MysqlCozinhaRepository implements CozinhaRepository {
     @Override
     public void adicionar(Cozinha cozinha) {
        manager.merge(cozinhaTranslator.toCozinhaModelFromCozinha(cozinha));
+    }
+
+    @Override
+    public Cozinha buscar(String nome) {
+        return manager.createQuery("SELECT c FROM CozinhaModel c WHERE c.nome = ?1", CozinhaModel.class)
+                .setParameter(1, nome)
+                .getResultList()
+                .stream()
+                .map(model -> cozinhaTranslator.toCozinhaFromCozinhaModel(model))
+                .findFirst()
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        "Nao foi possivel encontrar uma cozinha de nome " + nome
+                ));
     }
 
 

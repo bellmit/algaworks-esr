@@ -5,4 +5,5 @@ import java.util.List;
 public interface CozinhaRepository {
     List<Cozinha> listar();
     void adicionar(Cozinha cozinha);
+    Cozinha buscar(String nome);
 }
