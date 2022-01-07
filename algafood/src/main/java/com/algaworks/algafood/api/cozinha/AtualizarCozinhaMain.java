@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.cozinha;
 
 import com.algaworks.algafood.AlgafoodApplication;
 import com.algaworks.algafood.application.cozinha.AdicionarCozinhaCommand;
+import com.algaworks.algafood.application.cozinha.AtualizarCozinhaCommand;
 import com.algaworks.algafood.application.cozinha.CozinhaApplicationService;
 import com.algaworks.algafood.domain.model.cozinha.Cozinha;
 import com.algaworks.algafood.port.adapter.persistence.repository.MysqlCozinhaRepository;
@@ -11,7 +12,7 @@ import org.springframework.context.ApplicationContext;
 
 import java.util.List;
 
-public class BuscarCozinhaMain {
+public class AtualizarCozinhaMain {
 
     public static void main(String[] args) {
         ApplicationContext applicationContext = new SpringApplicationBuilder(AlgafoodApplication.class)
@@ -20,8 +21,16 @@ public class BuscarCozinhaMain {
 
         MysqlCozinhaRepository repository = applicationContext.getBean(MysqlCozinhaRepository.class);
 
-        Cozinha tailandesa = repository.buscar("Tailandesa").get();
+        CozinhaApplicationService service = new CozinhaApplicationService(repository);
 
-        System.out.println("Cozinha encontrada: " + tailandesa);
+        AtualizarCozinhaCommand command = new AtualizarCozinhaCommand("Indiana", "Indiana 2");
+
+        service.atualizarCozinha(command);
+
+        List<Cozinha> cozinhas = repository.listar();
+
+        for (Cozinha cozinha : cozinhas) {
+            System.out.println(cozinha.getNome());
+        }
     }
 }

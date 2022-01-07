@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -34,20 +35,27 @@ public class MysqlCozinhaRepository implements CozinhaRepository {
     @Transactional
     @Override
     public void adicionar(Cozinha cozinha) {
-       manager.merge(cozinhaTranslator.toCozinhaModelFromCozinha(cozinha));
+        manager.merge(cozinhaTranslator.toCozinhaModelFromCozinha(cozinha));
     }
 
     @Override
-    public Cozinha buscar(String nome) {
-        return manager.createQuery("SELECT c FROM CozinhaModel c WHERE c.nome = ?1", CozinhaModel.class)
-                .setParameter(1, nome)
+    public Optional<Cozinha> buscar(String codigo) {
+        return manager.createQuery("SELECT c FROM CozinhaModel c WHERE c.id = ?1", CozinhaModel.class)
+                .setParameter(1, codigo)
                 .getResultList()
                 .stream()
                 .map(model -> cozinhaTranslator.toCozinhaFromCozinhaModel(model))
-                .findFirst()
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        "Nao foi possivel encontrar uma cozinha de nome " + nome
-                ));
+                .findFirst();
+
+    }
+
+    @Transactional
+    @Override
+    public void atualizar(Cozinha cozinha) {
+        manager.createQuery("UPDATE CozinhaModel c SET c.nome = ?1  WHERE c.id = ?2")
+                .setParameter(1, cozinha.getNome())
+                .setParameter(2, cozinha.getCodigo())
+                .executeUpdate();
     }
 
 
