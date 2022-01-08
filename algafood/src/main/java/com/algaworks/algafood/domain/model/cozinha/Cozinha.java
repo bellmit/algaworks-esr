@@ -19,8 +19,8 @@ public class Cozinha {
         this.nome = nome;
     }
 
-    private void validarId(String codigo) {
-        if(!StringUtils.hasText(codigo)) {
+    private void validarId(String id) {
+        if(!StringUtils.hasText(id)) {
             throw new CozinhaException("id da cozinha nao pode ser null");
         }
     }

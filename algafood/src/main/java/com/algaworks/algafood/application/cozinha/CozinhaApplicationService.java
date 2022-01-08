@@ -2,7 +2,7 @@ package com.algaworks.algafood.application.cozinha;
 
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.cozinha.Cozinha;
-import com.algaworks.algafood.domain.model.cozinha.CozinhaRepository;
+import com.algaworks.algafood.domain.model.cozinha.CozinhaDomainService;
 import lombok.AllArgsConstructor;
 
 import java.util.UUID;
@@ -10,30 +10,22 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CozinhaApplicationService {
 
-    private CozinhaRepository cozinhaRepository;
+    private CozinhaDomainService domainService;
 
     public void adicionarCozinha(AdicionarCozinhaCommand command) {
         Cozinha cozinha = new Cozinha(UUID.randomUUID().toString(), command.getNome());
-        cozinhaRepository.adicionar(cozinha);
+        domainService.adicionar(cozinha);
     }
 
     public void atualizarCozinha(AtualizarCozinhaCommand command) {
-        Cozinha cozinha = buscarOuFalhar(command.getId());
-
+        Cozinha cozinha = domainService.buscar(command.getId());
         cozinha.atualizarNome(command.getNome());
-        cozinhaRepository.atualizar(cozinha);
+        domainService.adicionar(cozinha);
     }
 
     public void removerCozinha(RemoverCozinhaCommand command) {
-        Cozinha cozinha = buscarOuFalhar(command.getId());
-
-        cozinhaRepository.remover(cozinha);
+        Cozinha cozinha = domainService.buscar(command.getId());
+        domainService.remover(cozinha);
     }
 
-    private Cozinha buscarOuFalhar(String id) {
-        return cozinhaRepository.buscar(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        "Nao foi possivel encontrar uma cozinha de id: " + id
-                ));
-    }
 }

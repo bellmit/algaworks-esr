@@ -5,6 +5,7 @@ import com.algaworks.algafood.application.cozinha.AdicionarCozinhaCommand;
 import com.algaworks.algafood.application.cozinha.CozinhaApplicationService;
 import com.algaworks.algafood.application.cozinha.RemoverCozinhaCommand;
 import com.algaworks.algafood.domain.model.cozinha.Cozinha;
+import com.algaworks.algafood.domain.model.cozinha.CozinhaDomainService;
 import com.algaworks.algafood.port.adapter.persistence.repository.MysqlCozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -22,15 +23,27 @@ public class RemoverCozinhaMain {
 
         MysqlCozinhaRepository repository = applicationContext.getBean(MysqlCozinhaRepository.class);
 
-        CozinhaApplicationService service = new CozinhaApplicationService(repository);
+        CozinhaDomainService domainService = new CozinhaDomainService(repository);
 
-        Optional<Cozinha> indiana = repository.buscarPeloNome("Indiana");
+        CozinhaApplicationService service = new CozinhaApplicationService(domainService);
 
-        RemoverCozinhaCommand command = new RemoverCozinhaCommand(indiana.get().getId());
+        AdicionarCozinhaCommand command = new AdicionarCozinhaCommand("Portuguesa");
 
-        service.removerCozinha(command);
+        service.adicionarCozinha(command);
 
         List<Cozinha> cozinhas = repository.listar();
+
+        for (Cozinha cozinha : cozinhas) {
+            System.out.println(cozinha.getNome());
+        }
+
+        Optional<Cozinha> indiana = repository.buscarPeloNome("Portuguesa");
+
+        RemoverCozinhaCommand command2 = new RemoverCozinhaCommand(indiana.get().getId());
+
+        service.removerCozinha(command2);
+
+        cozinhas = repository.listar();
 
         for (Cozinha cozinha : cozinhas) {
             System.out.println(cozinha.getNome());

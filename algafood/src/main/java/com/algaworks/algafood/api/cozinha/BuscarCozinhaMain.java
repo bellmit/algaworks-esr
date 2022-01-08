@@ -20,7 +20,7 @@ public class BuscarCozinhaMain {
 
         MysqlCozinhaRepository repository = applicationContext.getBean(MysqlCozinhaRepository.class);
 
-        Cozinha tailandesa = repository.buscar("Tailandesa").get();
+        Cozinha tailandesa = repository.buscarPeloNome("Tailandesa").get();
 
         System.out.println("Cozinha encontrada: " + tailandesa);
     }

@@ -4,6 +4,7 @@ import com.algaworks.algafood.AlgafoodApplication;
 import com.algaworks.algafood.application.cozinha.AdicionarCozinhaCommand;
 import com.algaworks.algafood.application.cozinha.CozinhaApplicationService;
 import com.algaworks.algafood.domain.model.cozinha.Cozinha;
+import com.algaworks.algafood.domain.model.cozinha.CozinhaDomainService;
 import com.algaworks.algafood.port.adapter.persistence.repository.MysqlCozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -20,7 +21,9 @@ public class AdicionarCozinhaMain {
 
         MysqlCozinhaRepository repository = applicationContext.getBean(MysqlCozinhaRepository.class);
 
-        CozinhaApplicationService service = new CozinhaApplicationService(repository);
+        CozinhaDomainService domainService = new CozinhaDomainService(repository);
+
+        CozinhaApplicationService service = new CozinhaApplicationService(domainService);
 
         AdicionarCozinhaCommand command = new AdicionarCozinhaCommand("Portuguesa");
 
@@ -31,5 +34,7 @@ public class AdicionarCozinhaMain {
         for (Cozinha cozinha : cozinhas) {
             System.out.println(cozinha.getNome());
         }
+
+        service.adicionarCozinha(command);
     }
 }

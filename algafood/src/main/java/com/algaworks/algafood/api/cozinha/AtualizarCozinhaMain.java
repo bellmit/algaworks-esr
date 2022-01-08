@@ -5,12 +5,14 @@ import com.algaworks.algafood.application.cozinha.AdicionarCozinhaCommand;
 import com.algaworks.algafood.application.cozinha.AtualizarCozinhaCommand;
 import com.algaworks.algafood.application.cozinha.CozinhaApplicationService;
 import com.algaworks.algafood.domain.model.cozinha.Cozinha;
+import com.algaworks.algafood.domain.model.cozinha.CozinhaDomainService;
 import com.algaworks.algafood.port.adapter.persistence.repository.MysqlCozinhaRepository;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContext;
 
 import java.util.List;
+import java.util.Optional;
 
 public class AtualizarCozinhaMain {
 
@@ -21,9 +23,13 @@ public class AtualizarCozinhaMain {
 
         MysqlCozinhaRepository repository = applicationContext.getBean(MysqlCozinhaRepository.class);
 
-        CozinhaApplicationService service = new CozinhaApplicationService(repository);
+        CozinhaDomainService domainService = new CozinhaDomainService(repository);
 
-        AtualizarCozinhaCommand command = new AtualizarCozinhaCommand("Indiana", "Indiana 2");
+        CozinhaApplicationService service = new CozinhaApplicationService(domainService);
+
+        Optional<Cozinha> indiana = repository.buscarPeloNome("Indiana");
+
+        AtualizarCozinhaCommand command = new AtualizarCozinhaCommand(indiana.get().getId(), "Indiana 2");
 
         service.atualizarCozinha(command);
 
