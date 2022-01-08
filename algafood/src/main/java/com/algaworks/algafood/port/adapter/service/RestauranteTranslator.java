@@ -13,6 +13,8 @@ import java.util.UUID;
 @AllArgsConstructor
 public class RestauranteTranslator {
 
+    private CozinhaTranslator cozinhaTranslator;
+
     public RestauranteModel toRestauranteModelFromRestaurante(Restaurante restaurante) {
         RestauranteModel restauranteModel = new RestauranteModel();
         restauranteModel.setId(UUID.fromString(restaurante.getId()));
@@ -22,7 +24,10 @@ public class RestauranteTranslator {
     }
 
     public Restaurante toRestauranteFromRestauranteModel(RestauranteModel restauranteModel) {
-        Restaurante restaurante = new Restaurante(restauranteModel.getId().toString(), restauranteModel.getNome());
+        Restaurante restaurante = new Restaurante(
+                restauranteModel.getId().toString(),
+                restauranteModel.getNome(),
+                cozinhaTranslator.toCozinhaFromCozinhaModel(restauranteModel.getCozinha()));
         restaurante.atualizarFrete(restauranteModel.getTaxaFrete());
         return restaurante;
     }
