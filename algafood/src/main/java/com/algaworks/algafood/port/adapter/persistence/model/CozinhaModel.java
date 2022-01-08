@@ -8,14 +8,15 @@ import javax.persistence.*;
 import java.util.UUID;
 
 @Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "cozinha")
 public class CozinhaModel {
+    @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
-    @EqualsAndHashCode.Include
     private UUID id;
     private String nome;
 }
