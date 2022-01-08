@@ -13,17 +13,27 @@ public class CozinhaApplicationService {
     private CozinhaRepository cozinhaRepository;
 
     public void adicionarCozinha(AdicionarCozinhaCommand command) {
-        Cozinha cozinha = new Cozinha(UUID.randomUUID(), command.getNome());
+        Cozinha cozinha = new Cozinha(UUID.randomUUID().toString(), command.getNome());
         cozinhaRepository.adicionar(cozinha);
     }
 
     public void atualizarCozinha(AtualizarCozinhaCommand command) {
-        Cozinha cozinha = cozinhaRepository.buscar(command.getCodigo())
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        "Nao foi possivel encontrar uma cozinha de nome " + command.getCodigo()
-                ));
+        Cozinha cozinha = buscarOuFalhar(command.getId());
 
         cozinha.atualizarNome(command.getNome());
         cozinhaRepository.atualizar(cozinha);
+    }
+
+    public void removerCozinha(RemoverCozinhaCommand command) {
+        Cozinha cozinha = buscarOuFalhar(command.getId());
+
+        cozinhaRepository.remover(cozinha);
+    }
+
+    private Cozinha buscarOuFalhar(String id) {
+        return cozinhaRepository.buscar(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(
+                        "Nao foi possivel encontrar uma cozinha de id: " + id
+                ));
     }
 }

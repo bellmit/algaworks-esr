@@ -4,25 +4,24 @@ import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.StringUtils;
 
-import java.util.UUID;
-
 @Getter
 @ToString
 public class Cozinha {
-    private UUID codigo;
+    private String id;
     private String nome;
 
-    public Cozinha(UUID codigo, String nome) {
-        validarCodigo(codigo);
+    public Cozinha(String id, String nome) {
+
+        validarId(id);
         validarNomeCozinha(nome);
 
-        this.codigo = codigo;
+        this.id = id;
         this.nome = nome;
     }
 
-    private void validarCodigo(UUID codigo) {
-        if(codigo == null) {
-            throw new CozinhaException("Codigo da cozinha nao pode ser null");
+    private void validarId(String codigo) {
+        if(!StringUtils.hasText(codigo)) {
+            throw new CozinhaException("id da cozinha nao pode ser null");
         }
     }
 

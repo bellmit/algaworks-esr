@@ -18,8 +18,6 @@ public class CozinhaModel {
     @EqualsAndHashCode.Include
     private UUID id;
     private String nome;
-
-
 }
 
 

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AtualizarCozinhaCommand {
+public class RemoverCozinhaCommand {
     private String id;
-    private String nome;
 }
