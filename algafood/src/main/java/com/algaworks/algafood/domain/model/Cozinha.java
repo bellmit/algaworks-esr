@@ -15,15 +15,11 @@ public class Cozinha {
 
     public Cozinha(UUID id, String nome) {
 
-        if(id == null) {
-            throw new NegocioException("Id da Cozinha nao pode ser null");
-        }
-
         if (!StringUtils.hasText(nome)) {
             throw new NegocioException("Nome da Cozinha nao pode ser null ou vazio");
         }
 
-        this.id = id;
+        this.id = id == null ? UUID.randomUUID() : id;
         this.nome = nome;
     }
 }
