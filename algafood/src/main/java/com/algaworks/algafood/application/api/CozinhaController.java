@@ -1,9 +1,11 @@
 package com.algaworks.algafood.application.api;
 
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CozinhaService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,13 @@ public class CozinhaController {
     }
 
     @GetMapping("/{id}")
-    public Cozinha buscar(@PathVariable UUID id) {
-        return cozinhaService.buscar(id);
+    public ResponseEntity<Cozinha> buscar(@PathVariable UUID id) {
+        try {
+            Cozinha cozinha = cozinhaService.buscar(id);
+            return ResponseEntity.ok(cozinha);
+        } catch (EntidadeNaoEncontradaException e) {
+           return ResponseEntity.notFound().build();
+        }
     }
 
 }
