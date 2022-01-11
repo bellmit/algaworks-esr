@@ -15,4 +15,5 @@ public interface RestauranteRepository {
     void remover(Restaurante restaurante);
     boolean existeRestauranteComNome(String nome);
     boolean existeRestauranteComNomeComIdDiferente(String nome, UUID id);
+    boolean existeRestauranteComCozinhaId(UUID id);
 }

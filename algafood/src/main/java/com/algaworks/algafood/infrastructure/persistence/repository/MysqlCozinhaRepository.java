@@ -70,9 +70,9 @@ public class MysqlCozinhaRepository implements CozinhaRepository {
 
     @Transactional
     @Override
-    public void remover(Cozinha cozinha) {
+    public void remover(UUID id) {
         manager.createQuery("DELETE FROM CozinhaModel c WHERE c.id = ?1")
-                .setParameter(1, cozinha.getId())
+                .setParameter(1, id)
                 .executeUpdate();
     }
 

@@ -10,5 +10,5 @@ public interface CozinhaService {
     void adicionar(Cozinha cozinha);
     Cozinha buscar(UUID id);
     void atualizar(Cozinha cozinha);
-    void remover(Cozinha cozinha);
+    void remover(UUID id);
 }

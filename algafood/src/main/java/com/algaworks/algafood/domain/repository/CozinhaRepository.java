@@ -12,7 +12,7 @@ public interface CozinhaRepository {
     Optional<Cozinha> buscar(UUID id);
     Optional<Cozinha> buscarPeloNome(String nome);
     void atualizar(Cozinha cozinha);
-    void remover(Cozinha cozinha);
+    void remover(UUID id);
     boolean existeCozinhaComId(UUID id);
     boolean existeCozinhaComNome(String nome);
     boolean existeCozinhaComNomeComIdDiferente(String nome, UUID id);

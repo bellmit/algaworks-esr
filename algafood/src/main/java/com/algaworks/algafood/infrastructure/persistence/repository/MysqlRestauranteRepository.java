@@ -24,7 +24,7 @@ public class MysqlRestauranteRepository implements RestauranteRepository {
 
     @Override
     public List<Restaurante> listar() {
-        return manager.createQuery("SELECT c FROM RestauranteModel c", RestauranteModel.class)
+        return manager.createQuery("SELECT r FROM RestauranteModel r", RestauranteModel.class)
                 .getResultList()
                 .stream()
                 .map(model -> restauranteTranslator.toRestauranteFromRestauranteModel(model))
@@ -39,7 +39,7 @@ public class MysqlRestauranteRepository implements RestauranteRepository {
 
     @Override
     public Optional<Restaurante> buscar(UUID id) {
-        return manager.createQuery("SELECT c FROM RestauranteModel c WHERE c.id = ?1", RestauranteModel.class)
+        return manager.createQuery("SELECT r FROM RestauranteModel r WHERE r.id = ?1", RestauranteModel.class)
                 .setParameter(1, id)
                 .getResultList()
                 .stream()
@@ -50,7 +50,7 @@ public class MysqlRestauranteRepository implements RestauranteRepository {
 
     @Override
     public Optional<Restaurante> buscarPeloNome(String nome) {
-        return manager.createQuery("SELECT c FROM RestauranteModel c WHERE c.nome = ?1", RestauranteModel.class)
+        return manager.createQuery("SELECT r FROM RestauranteModel r WHERE r.nome = ?1", RestauranteModel.class)
                 .setParameter(1, nome)
                 .getResultList()
                 .stream()
@@ -61,7 +61,7 @@ public class MysqlRestauranteRepository implements RestauranteRepository {
     @Transactional
     @Override
     public void atualizar(Restaurante restaurante) {
-        manager.createQuery("UPDATE RestauranteModel c SET c.nome = ?1  WHERE c.id = ?2")
+        manager.createQuery("UPDATE RestauranteModel r SET r.nome = ?1  WHERE r.id = ?2")
                 .setParameter(1, restaurante.getNome())
                 .setParameter(2, restaurante.getId())
                 .executeUpdate();
@@ -70,7 +70,7 @@ public class MysqlRestauranteRepository implements RestauranteRepository {
     @Transactional
     @Override
     public void remover(Restaurante restaurante) {
-        manager.createQuery("DELETE FROM RestauranteModel c WHERE c.id = ?1")
+        manager.createQuery("DELETE FROM RestauranteModel r WHERE r.id = ?1")
                 .setParameter(1, restaurante.getId())
                 .executeUpdate();
     }
@@ -78,8 +78,8 @@ public class MysqlRestauranteRepository implements RestauranteRepository {
     @Override
     public boolean existeRestauranteComNome(String nome) {
         return manager.createQuery(
-                        "select case when count(m)> 0 then true else false " +
-                                "end from RestauranteModel m where lower(m.nome) like lower(?1)", Boolean.class)
+                        "select case when count(r)> 0 then true else false " +
+                                "end from RestauranteModel r where lower(r.nome) like lower(?1)", Boolean.class)
                 .setParameter(1, nome)
                 .getSingleResult();
     }
@@ -87,11 +87,20 @@ public class MysqlRestauranteRepository implements RestauranteRepository {
     @Override
     public boolean existeRestauranteComNomeComIdDiferente(String nome, UUID id) {
         return manager.createQuery(
-                        "select case when count(m)> 0 then true else false " +
-                                "end from RestauranteModel m where lower(m.nome) like lower(?1) " +
-                                "and m.id <> ?2", Boolean.class)
+                        "select case when count(r)> 0 then true else false " +
+                                "end from RestauranteModel r where lower(r.nome) like lower(?1) " +
+                                "and r.id <> ?2", Boolean.class)
                 .setParameter(1, nome)
                 .setParameter(2, id)
+                .getSingleResult();
+    }
+
+    @Override
+    public boolean existeRestauranteComCozinhaId(UUID id) {
+        return manager.createQuery(
+                        "select case when count(r)> 0 then true else false " +
+                                "end from RestauranteModel r where r.cozinha.id = ?1", Boolean.class)
+                .setParameter(1, id)
                 .getSingleResult();
     }
 

@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.exception.CozinhaEmUsoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
+import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CozinhaService;
 import lombok.AllArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.util.UUID;
 public class DomainCozinhaService implements CozinhaService {
 
     private CozinhaRepository cozinhaRepository;
+    private RestauranteRepository restauranteRepository;
 
     @Override
     public List<Cozinha> listar() {
@@ -33,7 +35,7 @@ public class DomainCozinhaService implements CozinhaService {
     public void atualizar(Cozinha cozinha) {
 
         if(!cozinhaRepository.existeCozinhaComId(cozinha.getId())) {
-           throw new CozinhaEmUsoException(cozinha.getId());
+           throw new CozinhaNaoEncontradaException(cozinha.getId());
         }
 
         if(cozinhaRepository.existeCozinhaComNomeComIdDiferente(cozinha.getNome(), cozinha.getId())) {
@@ -50,11 +52,15 @@ public class DomainCozinhaService implements CozinhaService {
     }
 
     @Override
-    public void remover(Cozinha cozinha) {
-        if(!cozinhaRepository.existeCozinhaComId(cozinha.getId())) {
-            throw new CozinhaEmUsoException(cozinha.getId());
+    public void remover(UUID id) {
+        if(!cozinhaRepository.existeCozinhaComId(id)) {
+            throw new CozinhaNaoEncontradaException(id);
         }
 
-        cozinhaRepository.remover(cozinha);
+        if(restauranteRepository.existeRestauranteComCozinhaId(id)) {
+            throw new CozinhaEmUsoException();
+        }
+
+        cozinhaRepository.remover(id);
     }
 }

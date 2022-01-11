@@ -15,8 +15,8 @@ public class DomainServiceConfig {
     }
 
     @Bean
-    public CozinhaService cozinhaService(CozinhaRepository repository) {
-        return new DomainCozinhaService(repository);
+    public CozinhaService cozinhaService(CozinhaRepository repository, RestauranteRepository restauranteRepository) {
+        return new DomainCozinhaService(repository, restauranteRepository);
     }
 
     @Bean
