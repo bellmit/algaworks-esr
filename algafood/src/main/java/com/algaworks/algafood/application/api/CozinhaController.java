@@ -5,12 +5,10 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CozinhaService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @AllArgsConstructor
 @RestController
@@ -23,4 +21,10 @@ public class CozinhaController {
     public List<Cozinha> listar() {
         return cozinhaService.listar();
     }
+
+    @GetMapping("/{id}")
+    public Cozinha buscar(@PathVariable UUID id) {
+        return cozinhaService.buscar(id);
+    }
+
 }

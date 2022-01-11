@@ -20,4 +20,5 @@ public class EstadoController {
     public List<Estado> listar() {
         return estadoService.listar();
     }
+
 }
