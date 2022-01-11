@@ -14,12 +14,18 @@ public class Cozinha {
     private String nome;
 
     public Cozinha(UUID id, String nome) {
+        this.setId(id);
+        this.setNome(nome);
+    }
 
+    private void setId(UUID id) {
+        this.id = id == null ? UUID.randomUUID() : id;
+    }
+
+    private void setNome(String nome) {
         if (!StringUtils.hasText(nome)) {
             throw new NegocioException("Nome da Cozinha nao pode ser null ou vazio");
         }
-
-        this.id = id == null ? UUID.randomUUID() : id;
         this.nome = nome;
     }
 }

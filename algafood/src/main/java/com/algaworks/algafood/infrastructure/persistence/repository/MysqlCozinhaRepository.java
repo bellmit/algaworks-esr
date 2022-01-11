@@ -77,6 +77,15 @@ public class MysqlCozinhaRepository implements CozinhaRepository {
     }
 
     @Override
+    public boolean existeCozinhaComId(UUID id) {
+        return manager.createQuery(
+                        "select case when count(c)> 0 then true else false " +
+                                "end from CozinhaModel c where c.id = ?1", Boolean.class)
+                .setParameter(1, id)
+                .getSingleResult();
+    }
+
+    @Override
     public boolean existeCozinhaComNome(String nome) {
         return  manager.createQuery(
                 "select case when count(c)> 0 then true else false " +

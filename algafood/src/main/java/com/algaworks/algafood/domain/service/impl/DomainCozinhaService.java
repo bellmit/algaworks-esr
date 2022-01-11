@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service.impl;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.CozinhaEmUsoException;
+import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.service.CozinhaService;
@@ -23,7 +23,7 @@ public class DomainCozinhaService implements CozinhaService {
     @Override
     public void adicionar(Cozinha cozinha) {
         if(cozinhaRepository.existeCozinhaComNome(cozinha.getNome())) {
-            throw new EntidadeEmUsoException("Ja existe um cozinha cadastrada com o nome: " + cozinha.getNome());
+            throw new CozinhaEmUsoException(cozinha.getNome());
         }
 
         this.cozinhaRepository.adicionar(cozinha);
@@ -32,8 +32,12 @@ public class DomainCozinhaService implements CozinhaService {
     @Override
     public void atualizar(Cozinha cozinha) {
 
+        if(!cozinhaRepository.existeCozinhaComId(cozinha.getId())) {
+           throw new CozinhaEmUsoException(cozinha.getId());
+        }
+
         if(cozinhaRepository.existeCozinhaComNomeComIdDiferente(cozinha.getNome(), cozinha.getId())) {
-            throw new EntidadeEmUsoException("Ja existe um cozinha cadastrada com o nome: " + cozinha.getNome());
+            throw new CozinhaEmUsoException(cozinha.getNome());
         }
 
         this.cozinhaRepository.atualizar(cozinha);
@@ -42,13 +46,15 @@ public class DomainCozinhaService implements CozinhaService {
     @Override
     public Cozinha buscar(UUID id) {
         return cozinhaRepository.buscar(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        "Nao foi possivel encontrar uma cozinha de id: " + id
-                ));
+                .orElseThrow(() -> new CozinhaNaoEncontradaException(id));
     }
 
     @Override
     public void remover(Cozinha cozinha) {
+        if(!cozinhaRepository.existeCozinhaComId(cozinha.getId())) {
+            throw new CozinhaEmUsoException(cozinha.getId());
+        }
+
         cozinhaRepository.remover(cozinha);
     }
 }
