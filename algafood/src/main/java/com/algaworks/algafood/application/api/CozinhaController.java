@@ -2,15 +2,12 @@ package com.algaworks.algafood.application.api;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
-import com.algaworks.algafood.domain.exception.NegocioException;
-import com.algaworks.algafood.domain.model.Cozinha;
-import com.algaworks.algafood.domain.repository.CozinhaRepository;
-import com.algaworks.algafood.domain.service.CozinhaService;
+import com.algaworks.algafood.domain.model.cozinha.Cozinha;
+import com.algaworks.algafood.domain.model.cozinha.CozinhaId;
+import com.algaworks.algafood.domain.model.cozinha.CozinhaService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +28,7 @@ public class CozinhaController {
     @GetMapping("/{id}")
     public ResponseEntity<Cozinha> buscar(@PathVariable UUID id) {
         try {
-            Cozinha cozinha = cozinhaService.buscar(id);
+            Cozinha cozinha = cozinhaService.buscar(new CozinhaId(id));
             return ResponseEntity.ok(cozinha);
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.notFound().build();
@@ -51,7 +48,7 @@ public class CozinhaController {
     @PutMapping("/{id}")
     public ResponseEntity<?> atualizar(@PathVariable UUID id, @RequestBody Cozinha cozinha) {
         try {
-            Cozinha cozinhaAtualiza = new Cozinha(id, cozinha.getNome());
+            Cozinha cozinhaAtualiza = new Cozinha(new CozinhaId(id), cozinha.getNome());
             cozinhaService.atualizar(cozinhaAtualiza);
             return ResponseEntity.ok(cozinhaAtualiza);
 
@@ -66,7 +63,7 @@ public class CozinhaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> remover(@PathVariable UUID id) {
         try {
-            cozinhaService.remover(id);
+            cozinhaService.remover(new CozinhaId(id));
             return ResponseEntity.noContent().build();
 
         } catch (EntidadeEmUsoException e) {

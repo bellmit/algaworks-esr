@@ -1,7 +1,7 @@
 package com.algaworks.algafood.application.api;
 
-import com.algaworks.algafood.domain.model.Estado;
-import com.algaworks.algafood.domain.service.EstadoService;
+import com.algaworks.algafood.domain.model.estado.Estado;
+import com.algaworks.algafood.domain.model.estado.EstadoService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
