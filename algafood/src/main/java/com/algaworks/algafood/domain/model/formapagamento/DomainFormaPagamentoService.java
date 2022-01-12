@@ -1,11 +1,8 @@
 package com.algaworks.algafood.domain.model.formapagamento;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class DomainFormaPagamentoService implements FormaPagamentoService {
@@ -18,9 +15,8 @@ public class DomainFormaPagamentoService implements FormaPagamentoService {
 
     @Override
     public void adicionar(FormaPagamento formaPagamento) {
-        if(formaPagamentoRepository.existeFormaPagamentoComDescricao(formaPagamento.getDescricao())) {
-            throw new EntidadeEmUsoException(
-                    "Ja existe uma forma de pagamento cadastrada com a Descricao: " + formaPagamento.getDescricao());
+        if (formaPagamentoRepository.existeFormaPagamentoComDescricao(formaPagamento.getDescricao())) {
+            throw new FormaPagamentoEmUsoException(formaPagamento.getDescricao());
         }
 
         this.formaPagamentoRepository.adicionar(formaPagamento);
@@ -28,28 +24,27 @@ public class DomainFormaPagamentoService implements FormaPagamentoService {
     }
 
     @Override
-    public FormaPagamento buscar(UUID id) {
-        return this.formaPagamentoRepository.buscar(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        "Nao foi possivel encontrar uma forma de pagamento de id: " + id
-                ));
+    public FormaPagamento buscar(FormaPagamentoId formaPagamentoId) {
+        return this.formaPagamentoRepository.buscar(formaPagamentoId)
+                .orElseThrow(() -> new FormaPagamentoNaoEncontradaException(formaPagamentoId.getId()));
     }
 
     @Override
     public void atualizar(FormaPagamento formaPagamento) {
         if (this.formaPagamentoRepository.existeFormaPagamentoComDescricaoComIdDiferente(
-                formaPagamento.getDescricao(), formaPagamento.getId())
+                formaPagamento.getDescricao(), formaPagamento.getFormaPagamentoId())
         ) {
-            throw new EntidadeEmUsoException(
-                    "Ja existe um cozinha cadastrada com o nome: " + formaPagamento.getDescricao()
-            );
+            throw new FormaPagamentoEmUsoException(formaPagamento.getDescricao());
         }
 
         this.formaPagamentoRepository.atualizar(formaPagamento);
     }
 
     @Override
-    public void remover(FormaPagamento formaPagamento) {
-        formaPagamentoRepository.remover(formaPagamento);
+    public void remover(FormaPagamentoId formaPagamentoId) {
+        if(!formaPagamentoRepository.existeFormaPagamentoComId(formaPagamentoId)) {
+            new FormaPagamentoNaoEncontradaException(formaPagamentoId.getId());
+        }
+        formaPagamentoRepository.remover(formaPagamentoId);
     }
 }

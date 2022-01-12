@@ -7,7 +7,7 @@ public class PropriedadeInvalidaException extends NegocioException{
     private String mensagem;
 
     public PropriedadeInvalidaException(Class classe, String propriedade, String mensagem) {
-        super(String.format("%s.%s : $s", classe.getSimpleName(), propriedade, mensagem));
+        super(String.format("%s.%s : %s", classe.getSimpleName(), propriedade, mensagem));
 
         this.nomeClasse = classe.getSimpleName();
         this.propriedade = propriedade;

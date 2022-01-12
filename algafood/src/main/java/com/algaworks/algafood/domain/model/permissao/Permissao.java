@@ -1,35 +1,44 @@
 package com.algaworks.algafood.domain.model.permissao;
 
-import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.StringUtils;
 
-import java.util.UUID;
-
 @Getter
 @ToString
 public class Permissao {
-    private UUID id;
+    private PermissaoId permissaoId;
     private String nome;
     private String descricao;
 
-    public Permissao(UUID id, String nome, String descricao) {
+    public Permissao(PermissaoId permissaoId, String nome, String descricao) {
+        this.setPermissaoId(permissaoId);
+        this.setNome(nome);
+        this.setDescricao(descricao);
+    }
 
-        if(id == null) {
-            throw new NegocioException("id da permissao nao pode ser null ou vazio");
+    private void setPermissaoId(PermissaoId permissaoId) {
+        if (permissaoId == null) {
+            throw new PropriedadeInvalidaException(Permissao.class, "permissaoId", "deve ser informado");
         }
 
-        if(!StringUtils.hasText(nome)) {
-            throw new NegocioException("nome da permissao nao pode ser null ou vazio");
+        this.permissaoId = permissaoId;
+    }
+
+    private void setNome(String nome) {
+        if (!StringUtils.hasText(nome)) {
+            throw new PropriedadeInvalidaException(Permissao.class, "nome", "deve ser informado");
         }
 
-        if(!StringUtils.hasText(descricao)) {
-            throw new NegocioException("descricao da permissao nao pode ser null ou vazio");
-        }
-
-        this.id = id;
         this.nome = nome;
+    }
+
+    private void setDescricao(String descricao) {
+        if (!StringUtils.hasText(descricao)) {
+            throw new PropriedadeInvalidaException(Permissao.class, "descricao", "deve ser informado");
+        }
+
         this.descricao = descricao;
     }
 }

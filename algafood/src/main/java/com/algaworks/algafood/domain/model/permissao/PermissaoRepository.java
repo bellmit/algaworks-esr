@@ -9,10 +9,11 @@ import java.util.UUID;
 public interface PermissaoRepository {
     List<Permissao> listar();
     void adicionar(Permissao permissao);
-    Optional<Permissao> buscar(UUID id);
+    Optional<Permissao> buscar(PermissaoId permissaoId);
     Optional<Permissao> buscarPeloNome(String descricao);
     void atualizar(Permissao permissao);
-    void remover(Permissao permissao);
+    void remover(PermissaoId permissaoId);
     boolean existePermissaoComNome(String nome);
-    boolean existePermissaoComNomeComIdDiferente(String nome, UUID id);
+    boolean existePermissaoComNomeComIdDiferente(String nome, PermissaoId permissaoId);
+    boolean existePermissaoComId(PermissaoId permissaoId);
 }

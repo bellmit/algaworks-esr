@@ -94,5 +94,14 @@ public class MysqlEstadoRepository implements EstadoRepository {
                 .getSingleResult();
     }
 
+    @Override
+    public boolean existeEstadoComId(EstadoId estadoId) {
+        return manager.createQuery(
+                        "select case when count(e)> 0 then true else false " +
+                                "end from EstadoModel e where e.id = ?1 ", Boolean.class)
+                .setParameter(1, estadoId.getId())
+                .getSingleResult();
+    }
+
 
 }

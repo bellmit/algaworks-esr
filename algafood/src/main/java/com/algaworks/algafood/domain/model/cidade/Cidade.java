@@ -1,31 +1,44 @@
 package com.algaworks.algafood.domain.model.cidade;
 
-import com.algaworks.algafood.domain.exception.NegocioException;
-import com.algaworks.algafood.domain.model.estado.Estado;
+import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
+import com.algaworks.algafood.domain.model.estado.EstadoId;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.StringUtils;
 
-import java.util.UUID;
-
 @Getter
 @ToString
 public class Cidade {
-    private UUID id;
+    private CidadeId cidadeId;
     private String nome;
-    private Estado estado;
+    private EstadoId estadoId;
 
-    public Cidade(UUID id, String nome, Estado estado) {
-        if(id == null) {
-            throw new NegocioException("id da cidade nao pode ser null");
+    public Cidade(CidadeId cidadeId, String nome, EstadoId estadoId) {
+        this.setCidadeId(cidadeId);
+        this.setNome(nome);
+        this.setEstadoId(estadoId);
+    }
+
+    private void setCidadeId(CidadeId cidadeId) {
+        if (cidadeId == null) {
+            throw new PropriedadeInvalidaException(Cidade.class, "cidadeId", "deve ser informado");
         }
 
-        if(!StringUtils.hasText(nome)) {
-            throw new NegocioException("nome da cidade nao pode ser null ou vazio ");
-        }
+        this.cidadeId = cidadeId;
+    }
 
-        this.id = id;
+    private void setNome(String nome) {
+        if (!StringUtils.hasText(nome)) {
+            throw new PropriedadeInvalidaException(Cidade.class, "nome", "deve ser informado");
+        }
         this.nome = nome;
-        this.estado = estado;
+    }
+
+    private void setEstadoId(EstadoId estadoId) {
+        if (estadoId == null) {
+            throw new PropriedadeInvalidaException(Cidade.class, "estadoId", "deve ser informado");
+        }
+
+        this.estadoId = estadoId;
     }
 }

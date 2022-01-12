@@ -25,7 +25,7 @@ public class DomainRestauranteService implements RestauranteService {
         }
 
         if (!cozinhaRepository.existeCozinhaComId(restaurante.getCozinhaId())) {
-            throw new PropriedadeInvalidaException(Restaurante.class, "cozinha", "Nao existe essa cozinha");
+            throw new PropriedadeInvalidaException(Restaurante.class, "cozinhaId", "invalida");
         }
 
         this.restauranteRepository.adicionar(restaurante);

@@ -1,6 +1,7 @@
 package com.algaworks.algafood.infrastructure.persistence.model.permissao;
 
 import com.algaworks.algafood.domain.model.permissao.Permissao;
+import com.algaworks.algafood.domain.model.permissao.PermissaoId;
 import com.algaworks.algafood.infrastructure.persistence.model.permissao.PermissaoModel;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,7 +12,7 @@ public class PermissaoTranslator {
 
     public PermissaoModel toPermissaoModelFromPermissao(Permissao permissao) {
         PermissaoModel permissaoModel = new PermissaoModel();
-        permissaoModel.setId(permissao.getId());
+        permissaoModel.setId(permissao.getPermissaoId().getId());
         permissaoModel.setNome(permissao.getNome());
         permissaoModel.setDescricao(permissao.getDescricao());
         return permissaoModel;
@@ -19,7 +20,7 @@ public class PermissaoTranslator {
 
     public Permissao toPermissaoFromPermissaoModel(PermissaoModel permissaoModel) {
         return new Permissao(
-                permissaoModel.getId(),
+                new PermissaoId(permissaoModel.getId()),
                 permissaoModel.getNome(),
                 permissaoModel.getDescricao()
         );

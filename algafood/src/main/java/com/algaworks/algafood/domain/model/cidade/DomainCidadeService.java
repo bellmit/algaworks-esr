@@ -20,7 +20,7 @@ public class DomainCidadeService implements CidadeService {
     @Override
     public void adicionar(Cidade cidade) {
         if(cidadeRepository.existeCidadeComNome(cidade.getNome())) {
-            throw new EntidadeEmUsoException("Ja existe uma cidade cadastrada com o nome: " + cidade.getNome());
+            throw new CidadeEmUsoException(cidade.getNome());
         }
 
         this.cidadeRepository.adicionar(cidade);
@@ -29,23 +29,21 @@ public class DomainCidadeService implements CidadeService {
     @Override
     public void atualizar(Cidade cidade) {
 
-        if(cidadeRepository.existeCidadeComNomeComIdDiferente(cidade.getNome(), cidade.getId())) {
-            throw new EntidadeEmUsoException("Ja existe uma cidade cadastrada com o nome: " + cidade.getNome());
+        if(cidadeRepository.existeCidadeComNomeComIdDiferente(cidade.getNome(), cidade.getCidadeId())) {
+            throw new CidadeEmUsoException(cidade.getNome());
         }
 
         this.cidadeRepository.atualizar(cidade);
     }
 
     @Override
-    public void remover(Cidade cidade) {
-        cidadeRepository.remover(cidade);
+    public void remover(CidadeId cidadeId) {
+        cidadeRepository.remover(cidadeId);
     }
 
     @Override
-    public Cidade buscar(UUID id) {
-        return cidadeRepository.buscar(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        "Nao foi possivel encontrar uma cidade de id: " + id
-                ));
+    public Cidade buscar(CidadeId cidadeId) {
+        return cidadeRepository.buscar(cidadeId)
+                .orElseThrow(() -> new CidadeNaoEncontradaException(cidadeId.getId()));
     }
 }

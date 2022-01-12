@@ -35,8 +35,8 @@ public class DomainServiceConfig {
     }
 
     @Bean
-    public EstadoService estadoService(EstadoRepository repository) {
-        return new DomainEstadoService(repository);
+    public EstadoService estadoService(EstadoRepository estadoRepository, CidadeRepository cidadeRepository) {
+        return new DomainEstadoService(estadoRepository, cidadeRepository);
     }
 
     @Bean

@@ -15,4 +15,5 @@ public interface EstadoRepository {
     void remover(EstadoId estadoId);
     boolean existeEstadoComNome(String nome);
     boolean existeEstadoComNomeComIdDiferente(String nome, EstadoId estadoId);
+    boolean existeEstadoComId(EstadoId estadoId);
 }

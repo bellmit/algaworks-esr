@@ -1,5 +1,7 @@
 package com.algaworks.algafood.domain.model.estado;
 
+import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
+import com.algaworks.algafood.domain.model.cidade.CidadeRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -8,6 +10,7 @@ import java.util.List;
 public class DomainEstadoService implements EstadoService {
 
     private EstadoRepository estadoRepository;
+    private CidadeRepository cidadeRepository;
 
     @Override
     public List<Estado> listar() {
@@ -26,6 +29,10 @@ public class DomainEstadoService implements EstadoService {
     @Override
     public void atualizar(Estado estado) {
 
+        if(!estadoRepository.existeEstadoComId(estado.getEstadoId())) {
+            throw new EstadoNaoEncontradoException(estado.getEstadoId().getId());
+        }
+
         if(estadoRepository.existeEstadoComNomeComIdDiferente(estado.getNome(), estado.getEstadoId())) {
             throw new EstadoEmUsoException(estado.getNome());
         }
@@ -41,6 +48,14 @@ public class DomainEstadoService implements EstadoService {
 
     @Override
     public void remover(EstadoId estadoId) {
+        if(!estadoRepository.existeEstadoComId(estadoId)) {
+            throw new EstadoNaoEncontradoException(estadoId.getId());
+        }
+
+        if(cidadeRepository.existeCidadeComEstadoId(estadoId)) {
+            throw new EstadoEmUsoException();
+        }
+
         estadoRepository.remover(estadoId);
     }
 }

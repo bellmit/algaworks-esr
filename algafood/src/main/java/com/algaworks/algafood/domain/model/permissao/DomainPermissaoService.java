@@ -19,8 +19,7 @@ public class DomainPermissaoService implements PermissaoService {
     @Override
     public void adicionar(Permissao permissao) {
         if(permissaoRepository.existePermissaoComNome(permissao.getNome())) {
-            throw new EntidadeEmUsoException(
-                    "Ja existe uma permissao cadastrada com o nome: " + permissao.getNome());
+            throw new PermissaoEmUsoException(permissao.getNome());
         }
 
         this.permissaoRepository.adicionar(permissao);
@@ -28,28 +27,30 @@ public class DomainPermissaoService implements PermissaoService {
     }
 
     @Override
-    public Permissao buscar(UUID id) {
-        return this.permissaoRepository.buscar(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        "Nao foi possivel encontrar uma permissao de id: " + id
-                ));
+    public Permissao buscar(PermissaoId permissaoId) {
+        return this.permissaoRepository.buscar(permissaoId)
+                .orElseThrow(() -> new PermissaoNaoEncontradaException(permissaoId.getId()));
     }
 
     @Override
     public void atualizar(Permissao permissao) {
+        if(!this.permissaoRepository.existePermissaoComId(permissao.getPermissaoId())) {
+            throw new PermissaoNaoEncontradaException(permissao.getPermissaoId().getId());
+        }
+
+
         if (this.permissaoRepository.existePermissaoComNomeComIdDiferente(
-                permissao.getNome(), permissao.getId())
+                permissao.getNome(),
+                permissao.getPermissaoId())
         ) {
-            throw new EntidadeEmUsoException(
-                    "Ja existe uma permissao cadastrada com o nome: " + permissao.getNome()
-            );
+            throw new PermissaoEmUsoException(permissao.getNome());
         }
 
         this.permissaoRepository.atualizar(permissao);
     }
 
     @Override
-    public void remover(Permissao permissao) {
-        permissaoRepository.remover(permissao);
+    public void remover(PermissaoId permissaoId) {
+        permissaoRepository.remover(permissaoId);
     }
 }
