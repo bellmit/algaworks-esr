@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.model.formapagamento;
 
+import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.StringUtils;
@@ -7,21 +8,27 @@ import org.springframework.util.StringUtils;
 @Getter
 @ToString
 public class FormaPagamento {
-    private String id;
+    private FormaPagamentoId formaPagamentoId;
     private String descricao;
 
-    public FormaPagamento(String id, String descricao) {
+    public FormaPagamento(FormaPagamentoId formaPagamentoId, String descricao) {
+       this.setFormaPagamentoId(formaPagamentoId);
+       this.setDescricao(descricao);
+    }
 
-        if(!StringUtils.hasText(id)) {
-            throw new FormaPagamentoException("id da forma de pagamento nao pode ser null");
+    private void setFormaPagamentoId(FormaPagamentoId formaPagamentoId) {
+        if(formaPagamentoId == null) {
+            throw new PropriedadeInvalidaException(FormaPagamento.class, "formaPagamentoId", "deve ser informado");
         }
 
+        this.formaPagamentoId = formaPagamentoId;
+    }
+
+    private void setDescricao(String descricao) {
         if(!StringUtils.hasText(descricao)) {
-            throw new FormaPagamentoException("descricao da forma de pagamento nao pode ser null");
+            throw new PropriedadeInvalidaException(FormaPagamento.class, "formaPagamentoId", "deve ser informado");
         }
 
-
-        this.id = id;
         this.descricao = descricao;
     }
 }

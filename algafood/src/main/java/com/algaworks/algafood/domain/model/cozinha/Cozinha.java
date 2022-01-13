@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.model.cozinha;
 
+import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.StringUtils;
@@ -7,34 +8,25 @@ import org.springframework.util.StringUtils;
 @Getter
 @ToString
 public class Cozinha {
-    private String id;
+    private CozinhaId cozinhaId;
     private String nome;
 
-    public Cozinha(String id, String nome) {
-
-        validarId(id);
-        validarNomeCozinha(nome);
-
-        this.id = id;
-        this.nome = nome;
+    public Cozinha(CozinhaId cozinhaId, String nome) {
+        this.setCozinhaId(cozinhaId);
+        this.setNome(nome);
     }
 
-    private void validarId(String id) {
-        if(!StringUtils.hasText(id)) {
-            throw new CozinhaException("id da cozinha nao pode ser null");
+    private void setCozinhaId(CozinhaId cozinhaId) {
+        if(cozinhaId == null) {
+            throw new PropriedadeInvalidaException(Cozinha.class, "cozinhaId", "deve ser informado");
         }
+        this.cozinhaId = cozinhaId;
     }
 
-    private void validarNomeCozinha(String nome) {
+    private void setNome(String nome) {
         if (!StringUtils.hasText(nome)) {
-            throw new CozinhaException("Nome da cozinha nao pode ser null ou vazio");
+            throw new PropriedadeInvalidaException(Cozinha.class, "nome", "deve ser informado");
         }
-    }
-
-    public void atualizarNome(String nome) {
-        validarNomeCozinha(nome);
         this.nome = nome;
     }
-
-
 }

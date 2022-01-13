@@ -1,41 +1,58 @@
 package com.algaworks.algafood.domain.model.restaurante;
 
-import com.algaworks.algafood.domain.model.cozinha.Cozinha;
+import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
+import com.algaworks.algafood.domain.model.cozinha.CozinhaId;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 
 @Getter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Restaurante {
-    private String id;
+    @EqualsAndHashCode.Include
+    private RestauranteId restauranteId;
     private String nome;
     private BigDecimal taxaFrete;
-    private Cozinha cozinha;
+    private CozinhaId cozinhaId;
 
-    public Restaurante(String id, String nome, Cozinha cozinha) {
-
-        if(!StringUtils.hasText(id)) {
-            throw new RestauranteException("id do restaurante nao pode ser null ou vazio");
-        }
-
-        if(!StringUtils.hasText(nome)) {
-            throw new RestauranteException("Nome do restaurante nao pode ser null ou vazio");
-        }
-
-        if(cozinha == null) {
-            throw new RestauranteException("cozinha do restaurante nao pode der null");
-        }
-
-        this.id = id;
-        this.nome = nome;
-        this.cozinha = cozinha;
+    public Restaurante(RestauranteId restauranteId, String nome, BigDecimal taxaFrete, CozinhaId cozinhaId) {
+        this.setRestauranteId(restauranteId);
+        this.setNome(nome);
+        this.setTaxaFrete(taxaFrete);
+        this.setCozinhaId(cozinhaId);
     }
 
-    public void atualizarFrete(BigDecimal frete) {
-        if(frete == null) {
-            throw new RestauranteException("frete do restaurante nao pode ser null");
+    private void setRestauranteId(RestauranteId restauranteId) {
+        if(restauranteId == null) {
+            throw new PropriedadeInvalidaException(Restaurante.class, "restauranteId", "deve ser informado");
         }
-        this.taxaFrete = frete;
+
+        this.restauranteId = restauranteId;
+    }
+
+    private void setNome(String nome) {
+        if(!StringUtils.hasText(nome)) {
+            throw new PropriedadeInvalidaException(Restaurante.class, "nome", "deve ser informado");
+        }
+
+        this.nome = nome;
+    }
+
+    private void setTaxaFrete(BigDecimal taxaFrete) {
+        if(taxaFrete == null || taxaFrete.equals(BigDecimal.ZERO)) {
+            throw new PropriedadeInvalidaException(Restaurante.class, "taxaFrete", "deve ser maior que zero");
+        }
+
+        this.taxaFrete = taxaFrete;
+    }
+
+    private void setCozinhaId(CozinhaId cozinhaId) {
+        if(cozinhaId == null) {
+            throw new PropriedadeInvalidaException(Restaurante.class, "cozinhaId", "deve ser informado");
+        }
+
+        this.cozinhaId = cozinhaId;
     }
 }

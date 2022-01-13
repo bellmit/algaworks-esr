@@ -1,6 +1,6 @@
 package com.algaworks.algafood.domain.model.estado;
 
-import com.algaworks.algafood.domain.model.cidade.CidadeException;
+import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.util.StringUtils;
@@ -8,22 +8,27 @@ import org.springframework.util.StringUtils;
 @Getter
 @ToString
 public class Estado {
-    private String id;
+    private EstadoId estadoId;
     private String nome;
 
-    public Estado(String id, String nome) {
-
-        if(!StringUtils.hasText(id)) {
-            throw new CidadeException("id do estado nao pode ser null");
-        }
-
-        if(!StringUtils.hasText(nome)) {
-            throw new CidadeException("nome do estado nao pode ser null");
-        }
-
-        this.id = id;
-        this.nome = nome;
+    public Estado(EstadoId estadoId, String nome) {
+       this.setEstadoId(estadoId);
+       this.setNome(nome);
     }
 
+    public void setEstadoId(EstadoId estadoId) {
+        if(estadoId == null) {
+            throw new PropriedadeInvalidaException(Estado.class, "estadoId", "deve ser informado");
+        }
 
+        this.estadoId = estadoId;
+    }
+
+    public void setNome(String nome) {
+        if(!StringUtils.hasText(nome)) {
+            throw new PropriedadeInvalidaException(Estado.class, "nome", "deve ser informado");
+        }
+
+        this.nome = nome;
+    }
 }
