@@ -97,6 +97,15 @@ public class MysqlCidadeRepository implements CidadeRepository {
     }
 
     @Override
+    public boolean existeCidadeComId(CidadeId cidadeId) {
+        return manager.createQuery(
+                        "select case when count(c)> 0 then true else false " +
+                                "end from CidadeModel c where c.id = ?1", Boolean.class)
+                .setParameter(1, cidadeId.getId())
+                .getSingleResult();
+    }
+
+    @Override
     public boolean existeCidadeComEstadoId(EstadoId estadoId) {
         return manager.createQuery(
                         "select case when count(c)> 0 then true else false " +

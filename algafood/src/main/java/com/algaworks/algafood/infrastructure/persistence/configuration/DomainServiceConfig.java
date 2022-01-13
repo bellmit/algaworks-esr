@@ -25,8 +25,8 @@ import org.springframework.context.annotation.Configuration;
 public class DomainServiceConfig {
 
     @Bean
-    public CidadeService cidadeService(CidadeRepository repository) {
-        return new DomainCidadeService(repository);
+    public CidadeService cidadeService(CidadeRepository cidadeRepository, EstadoRepository estadoRepository) {
+        return new DomainCidadeService(cidadeRepository, estadoRepository);
     }
 
     @Bean

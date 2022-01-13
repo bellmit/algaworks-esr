@@ -1,4 +1,4 @@
-package com.algaworks.algafood.application.api.request;
+package com.algaworks.algafood.application.api.restaurante;
 
 import lombok.Data;
 

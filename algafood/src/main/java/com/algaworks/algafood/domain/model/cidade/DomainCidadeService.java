@@ -1,16 +1,16 @@
 package com.algaworks.algafood.domain.model.cidade;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
+import com.algaworks.algafood.domain.model.estado.EstadoRepository;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.UUID;
 
 @AllArgsConstructor
 public class DomainCidadeService implements CidadeService {
 
     private CidadeRepository cidadeRepository;
+    private EstadoRepository estadoRepository;
 
     @Override
     public List<Cidade> listar() {
@@ -23,11 +23,18 @@ public class DomainCidadeService implements CidadeService {
             throw new CidadeEmUsoException(cidade.getNome());
         }
 
+        if(!estadoRepository.existeEstadoComId(cidade.getEstadoId())) {
+            throw new PropriedadeInvalidaException(Cidade.class, "estadoId", "nao foi possivel encontrar um estado.");
+        }
+
         this.cidadeRepository.adicionar(cidade);
     }
 
     @Override
     public void atualizar(Cidade cidade) {
+        if(!cidadeRepository.existeCidadeComId(cidade.getCidadeId())) {
+            throw new CidadeNaoEncontradaException(cidade.getCidadeId().getId());
+        }
 
         if(cidadeRepository.existeCidadeComNomeComIdDiferente(cidade.getNome(), cidade.getCidadeId())) {
             throw new CidadeEmUsoException(cidade.getNome());
@@ -38,6 +45,10 @@ public class DomainCidadeService implements CidadeService {
 
     @Override
     public void remover(CidadeId cidadeId) {
+        if(!cidadeRepository.existeCidadeComId(cidadeId)) {
+            throw new CidadeNaoEncontradaException(cidadeId.getId());
+        }
+
         cidadeRepository.remover(cidadeId);
     }
 

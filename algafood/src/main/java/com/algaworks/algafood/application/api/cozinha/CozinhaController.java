@@ -1,6 +1,5 @@
-package com.algaworks.algafood.application.api;
+package com.algaworks.algafood.application.api.cozinha;
 
-import com.algaworks.algafood.application.api.request.CozinhaInput;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.cozinha.Cozinha;

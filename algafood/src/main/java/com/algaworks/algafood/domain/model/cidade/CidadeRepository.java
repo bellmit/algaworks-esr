@@ -16,5 +16,6 @@ public interface CidadeRepository {
     void remover(CidadeId cidadeId);
     boolean existeCidadeComNome(String nome);
     boolean existeCidadeComNomeComIdDiferente(String nome, CidadeId cidadeId);
+    boolean existeCidadeComId(CidadeId cidadeId);
     boolean existeCidadeComEstadoId(EstadoId estadoId);
 }
