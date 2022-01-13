@@ -60,9 +60,11 @@ public class MysqlRestauranteRepository implements RestauranteRepository {
     @Transactional
     @Override
     public void atualizar(Restaurante restaurante) {
-        manager.createQuery("UPDATE RestauranteModel r SET r.nome = ?1  WHERE r.id = ?2")
+        manager.createQuery("UPDATE RestauranteModel r SET r.nome = ?1, r.taxaFrete = ?2, r.cozinha.id = ?3  WHERE r.id = ?4")
                 .setParameter(1, restaurante.getNome())
-                .setParameter(2, restaurante.getRestauranteId().getId())
+                .setParameter(2, restaurante.getTaxaFrete())
+                .setParameter(3, restaurante.getCozinhaId().getId())
+                .setParameter(4, restaurante.getRestauranteId().getId())
                 .executeUpdate();
     }
 

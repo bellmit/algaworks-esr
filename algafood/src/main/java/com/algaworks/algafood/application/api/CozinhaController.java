@@ -1,5 +1,6 @@
 package com.algaworks.algafood.application.api;
 
+import com.algaworks.algafood.application.api.request.CozinhaInput;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.cozinha.Cozinha;
@@ -36,8 +37,9 @@ public class CozinhaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> adicionar(@RequestBody Cozinha cozinha) {
+    public ResponseEntity<?> adicionar(@RequestBody CozinhaInput input) {
         try {
+            Cozinha cozinha = new Cozinha(new CozinhaId(UUID.randomUUID()), input.getNome());
             cozinhaService.adicionar(cozinha);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());

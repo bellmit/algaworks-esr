@@ -57,4 +57,25 @@ public class RestauranteController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> atualizar(@PathVariable UUID id, @RequestBody RestauranteInput input) {
+        try {
+            Restaurante restaurante = RestauranteFactory
+                    .builder(id, input.getNome(), input.getTaxaFrete(), input.getCozinhaId())
+                    .build();
+
+            restauranteService.atualizar(restaurante);
+            return ResponseEntity.status(HttpStatus.OK).build();
+
+        } catch (EntidadeEmUsoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+
+        } catch (PropriedadeInvalidaException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

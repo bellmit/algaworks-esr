@@ -34,7 +34,7 @@ public class DomainRestauranteService implements RestauranteService {
     @Override
     public void atualizar(Restaurante restaurante) {
 
-        if (this.restauranteRepository.existeRestauranteComId(restaurante.getRestauranteId())) {
+        if (!this.restauranteRepository.existeRestauranteComId(restaurante.getRestauranteId())) {
             throw new RestauranteNaoEncontradaException(restaurante.getRestauranteId().getId());
         }
 
@@ -42,6 +42,10 @@ public class DomainRestauranteService implements RestauranteService {
                 restaurante.getNome(), restaurante.getRestauranteId())
         ) {
             throw new RestauranteEmUsoException(restaurante.getNome());
+        }
+
+        if (!cozinhaRepository.existeCozinhaComId(restaurante.getCozinhaId())) {
+            throw new PropriedadeInvalidaException(Restaurante.class, "cozinhaId", "invalida");
         }
 
         this.restauranteRepository.atualizar(restaurante);
