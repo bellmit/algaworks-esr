@@ -20,13 +20,12 @@ public class MysqlCidadeRepository implements CidadeRepository {
 
     private EntityManager manager;
     private CidadeTranslator cidadeTranslator;
+    private SpringDataCidadeRepository cidadeRepository;
 
 
     @Override
     public List<Cidade> listar() {
-
-        return manager.createQuery("SELECT c FROM CidadeModel c", CidadeModel.class)
-                .getResultList()
+        return cidadeRepository.findAll()
                 .stream()
                 .map(model -> cidadeTranslator.toCidadeFromCidadeModel(model))
                 .collect(Collectors.toList());
@@ -35,14 +34,12 @@ public class MysqlCidadeRepository implements CidadeRepository {
     @Transactional
     @Override
     public void adicionar(Cidade cidade) {
-        manager.merge(cidadeTranslator.toCidadeModelFromCidade(cidade));
+        cidadeRepository.save(cidadeTranslator.toCidadeModelFromCidade(cidade));
     }
 
     @Override
     public Optional<Cidade> buscar(CidadeId cidadeId) {
-        return manager.createQuery("SELECT c FROM CidadeModel c WHERE c.id = ?1", CidadeModel.class)
-                .setParameter(1, cidadeId.getId())
-                .getResultList()
+        return cidadeRepository.findById(cidadeId.getId())
                 .stream()
                 .map(model -> cidadeTranslator.toCidadeFromCidadeModel(model))
                 .findFirst();
@@ -51,9 +48,7 @@ public class MysqlCidadeRepository implements CidadeRepository {
 
     @Override
     public Optional<Cidade> buscarPeloNome(String nome) {
-        return manager.createQuery("SELECT c FROM CidadeModel c WHERE c.nome = ?1", CidadeModel.class)
-                .setParameter(1, nome)
-                .getResultList()
+        return cidadeRepository.findByNome(nome)
                 .stream()
                 .map(model -> cidadeTranslator.toCidadeFromCidadeModel(model))
                 .findFirst();
@@ -62,56 +57,33 @@ public class MysqlCidadeRepository implements CidadeRepository {
     @Transactional
     @Override
     public void atualizar(Cidade cidade) {
-        manager.createQuery("UPDATE CidadeModel c SET c.nome = ?1  WHERE c.id = ?2")
-                .setParameter(1, cidade.getNome())
-                .setParameter(2,  cidade.getCidadeId().getId())
-                .executeUpdate();
+        cidadeRepository.save(cidadeTranslator.toCidadeModelFromCidade(cidade));
     }
 
     @Transactional
     @Override
     public void remover(CidadeId cidadeId) {
-        manager.createQuery("DELETE FROM CidadeModel c WHERE c.id = ?1")
-                .setParameter(1, cidadeId.getId())
-                .executeUpdate();
+        cidadeRepository.deleteById(cidadeId.getId());
     }
 
     @Override
     public boolean existeCidadeComNome(String nome) {
-        return  manager.createQuery(
-                "select case when count(c)> 0 then true else false " +
-                        "end from CidadeModel c where lower(c.nome) like lower(?1)", Boolean.class)
-                .setParameter(1, nome)
-                .getSingleResult();
+        return cidadeRepository.existsByNome(nome);
     }
 
     @Override
     public boolean existeCidadeComNomeComIdDiferente(String nome, CidadeId cidadeId) {
-        return manager.createQuery(
-                        "select case when count(c)> 0 then true else false " +
-                                "end from CidadeModel c where lower(c.nome) like lower(?1) " +
-                                "and c.id <> ?2", Boolean.class)
-                .setParameter(1, nome)
-                .setParameter(2, cidadeId.getId())
-                .getSingleResult();
+        return cidadeRepository.existsByNomeAndIdNot(nome, cidadeId.getId());
     }
 
     @Override
     public boolean existeCidadeComId(CidadeId cidadeId) {
-        return manager.createQuery(
-                        "select case when count(c)> 0 then true else false " +
-                                "end from CidadeModel c where c.id = ?1", Boolean.class)
-                .setParameter(1, cidadeId.getId())
-                .getSingleResult();
+        return cidadeRepository.existsById(cidadeId.getId());
     }
 
     @Override
     public boolean existeCidadeComEstadoId(EstadoId estadoId) {
-        return manager.createQuery(
-                        "select case when count(c)> 0 then true else false " +
-                                "end from CidadeModel c where c.estado.id = ?1", Boolean.class)
-                .setParameter(1, estadoId.getId())
-                .getSingleResult();
+        return cidadeRepository.existsByEstadoId(estadoId.getId());
     }
 
 

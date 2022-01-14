@@ -21,17 +21,19 @@ import java.util.UUID;
 public class RestauranteController {
 
     private RestauranteService restauranteService;
+    private RestauranteAssembler assembler;
+    private RestauranteDisassembler disassembler;
 
     @GetMapping
-    public List<Restaurante> listar() {
-        return this.restauranteService.listar();
+    public List<RestauranteResponse> listar() {
+        return assembler.toCollectionModel(this.restauranteService.listar());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> buscar(@PathVariable UUID id) {
         try {
             Restaurante restaurante = restauranteService.buscar(new RestauranteId(id));
-            return ResponseEntity.ok(restaurante);
+            return ResponseEntity.ok(assembler.toModel(restaurante));
 
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -40,12 +42,9 @@ public class RestauranteController {
     }
 
     @PostMapping
-    public ResponseEntity<?> adicionar(@RequestBody RestauranteInput input) {
+    public ResponseEntity<?> adicionar(@RequestBody RestauranteRequest request) {
         try {
-            Restaurante restaurante = RestauranteFactory
-                    .builder(UUID.randomUUID(), input.getNome(), input.getTaxaFrete(), input.getCozinhaId())
-                    .build();
-
+            Restaurante restaurante = disassembler.toDomain(request);
             restauranteService.adicionar(restaurante);
             return ResponseEntity.status(HttpStatus.CREATED).build();
 
@@ -58,12 +57,9 @@ public class RestauranteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable UUID id, @RequestBody RestauranteInput input) {
+    public ResponseEntity<?> atualizar(@PathVariable UUID id, @RequestBody RestauranteRequest request) {
         try {
-            Restaurante restaurante = RestauranteFactory
-                    .builder(id, input.getNome(), input.getTaxaFrete(), input.getCozinhaId())
-                    .build();
-
+            Restaurante restaurante = disassembler.toDomain(id, request);
             restauranteService.atualizar(restaurante);
             return ResponseEntity.status(HttpStatus.OK).build();
 
@@ -75,6 +71,21 @@ public class RestauranteController {
 
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> remover(@PathVariable UUID id) {
+        try {
+            RestauranteId restauranteId = new RestauranteId(id);
+            restauranteService.remover(restauranteId);
+            return ResponseEntity.noContent().build();
+
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+
+        } catch (PropriedadeInvalidaException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 }

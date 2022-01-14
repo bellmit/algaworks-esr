@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
-public class RestauranteInput {
+public class RestauranteRequest {
     private String nome;
     private BigDecimal taxaFrete;
     private UUID cozinhaId;
