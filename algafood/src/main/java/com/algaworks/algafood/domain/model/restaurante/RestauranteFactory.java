@@ -1,8 +1,11 @@
 package com.algaworks.algafood.domain.model.restaurante;
 
 import com.algaworks.algafood.domain.model.cozinha.CozinhaId;
+import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoId;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 public class RestauranteFactory {
@@ -21,6 +24,11 @@ public class RestauranteFactory {
                 new CozinhaId(cidadeId)
         );
         return new RestauranteFactory(novoRestaurante);
+    }
+
+    public RestauranteFactory adicionarFormasPagamentos(List<UUID> ids) {
+        ids.forEach( id -> this.restaurante.adicionarFormaPagamento(new FormaPagamentoId(id)));
+        return this;
     }
 
     public Restaurante build() {

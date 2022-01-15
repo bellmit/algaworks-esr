@@ -22,21 +22,21 @@ public class MysqlFormaPagamentoRepository implements FormaPagamentoRepository {
     public List<FormaPagamento> listar() {
         return formaPagamentoRepository.findAll()
                 .stream()
-                .map(model -> formaPagmentoTranslator.toFormaPagamentoFromFormaPagamentoModel(model))
+                .map(model -> formaPagmentoTranslator.toFormaPagamento(model))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     @Override
     public void adicionar(FormaPagamento formaPagamento) {
-        formaPagamentoRepository.save(formaPagmentoTranslator.toFormaPagamentoModelFromFormaPagamento(formaPagamento));
+        formaPagamentoRepository.save(formaPagmentoTranslator.toFormaPagamentoModel(formaPagamento));
     }
 
     @Override
     public Optional<FormaPagamento> buscar(FormaPagamentoId formaPagamentoId) {
         return formaPagamentoRepository.findById(formaPagamentoId.getId())
                 .stream()
-                .map(model -> formaPagmentoTranslator.toFormaPagamentoFromFormaPagamentoModel(model))
+                .map(model -> formaPagmentoTranslator.toFormaPagamento(model))
                 .findFirst();
 
     }
@@ -45,7 +45,7 @@ public class MysqlFormaPagamentoRepository implements FormaPagamentoRepository {
     public Optional<FormaPagamento> buscarPelaDescricao(String descricao) {
         return formaPagamentoRepository.findByDescricao(descricao)
                 .stream()
-                .map(model -> formaPagmentoTranslator.toFormaPagamentoFromFormaPagamentoModel(model))
+                .map(model -> formaPagmentoTranslator.toFormaPagamento(model))
                 .findFirst();
     }
 
@@ -53,7 +53,7 @@ public class MysqlFormaPagamentoRepository implements FormaPagamentoRepository {
     @Override
     public void atualizar(FormaPagamento formaPagamento) {
         FormaPagamentoModel formaPagamentoModel = formaPagmentoTranslator
-                .toFormaPagamentoModelFromFormaPagamento(formaPagamento);
+                .toFormaPagamentoModel(formaPagamento);
         formaPagamentoRepository.save(formaPagamentoModel);
     }
 

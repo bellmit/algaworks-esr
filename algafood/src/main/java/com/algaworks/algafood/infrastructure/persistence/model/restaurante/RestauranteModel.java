@@ -1,12 +1,15 @@
 package com.algaworks.algafood.infrastructure.persistence.model.restaurante;
 
 import com.algaworks.algafood.infrastructure.persistence.model.cozinha.CozinhaModel;
+import com.algaworks.algafood.infrastructure.persistence.model.formapagamento.FormaPagamentoModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -29,4 +32,10 @@ public class RestauranteModel {
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
     private CozinhaModel cozinha;
+
+    @ManyToMany
+    @JoinTable(name = "restaurante_forma_pagamento",
+            joinColumns = @JoinColumn(name = "restaurante_id"),
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento_id"))
+    private Set<FormaPagamentoModel> formaPagamentos = new HashSet<>();
 }

@@ -45,3 +45,10 @@ SET @editarCozinhas = unhex(replace(uuid(), '-', ''));
 
 insert into permissao (id, nome, descricao) values (@consultarCozinhas, 'CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into permissao (id, nome, descricao) values (@editarCozinhas, 'EDITAR_COZINHAS', 'Permite editar cozinhas');
+
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (@retauranteThaiGourmet, @cartaoCredito);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (@retauranteThaiGourmet, @cartaoDebito);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (@retauranteThaiGourmet, @dinheiro);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (@restauranteThaiDelivery, @dinheiro);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (@restauranteTuktuk, @cartaoDebito);
+insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (@restauranteTuktuk, @dinheiro);

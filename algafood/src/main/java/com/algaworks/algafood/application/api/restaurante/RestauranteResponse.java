@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -13,4 +14,5 @@ public class RestauranteResponse {
     private String nome;
     private BigDecimal taxaFrete;
     private UUID cozinhaId;
+    private List<UUID> formasPagamento;
 }

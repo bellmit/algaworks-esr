@@ -2,11 +2,15 @@ package com.algaworks.algafood.domain.model.restaurante;
 
 import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
 import com.algaworks.algafood.domain.model.cozinha.CozinhaId;
+import com.algaworks.algafood.domain.model.formapagamento.FormaPagamento;
+import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -16,12 +20,26 @@ public class Restaurante {
     private String nome;
     private BigDecimal taxaFrete;
     private CozinhaId cozinhaId;
+    private Set<FormaPagamentoId> formaPagamentos;
 
     public Restaurante(RestauranteId restauranteId, String nome, BigDecimal taxaFrete, CozinhaId cozinhaId) {
+        this();
         this.setRestauranteId(restauranteId);
         this.setNome(nome);
         this.setTaxaFrete(taxaFrete);
         this.setCozinhaId(cozinhaId);
+    }
+
+    private Restaurante() {
+        this.formaPagamentos = new HashSet<>();
+    }
+
+    public void adicionarFormaPagamento(FormaPagamentoId formaPagamentoId) {
+        if(formaPagamentoId == null) {
+            throw new PropriedadeInvalidaException(Restaurante.class, "formaPagamentos", "deve ser informado");
+        }
+
+        this.formaPagamentos.add(formaPagamentoId);
     }
 
     private void setRestauranteId(RestauranteId restauranteId) {
