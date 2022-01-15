@@ -19,26 +19,29 @@ import java.util.UUID;
 public class CozinhaController {
 
     private CozinhaService cozinhaService;
+    private CozinhaAssembler assembler;
+    private CozinhaDisassembler disassembler;
 
     @GetMapping
-    public List<Cozinha> listar() {
-        return cozinhaService.listar();
+    public List<CozinhaResponse> listar() {
+        return assembler.toCollectionModel(this.cozinhaService.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cozinha> buscar(@PathVariable UUID id) {
+    public ResponseEntity<?> buscar(@PathVariable UUID id) {
         try {
             Cozinha cozinha = cozinhaService.buscar(new CozinhaId(id));
-            return ResponseEntity.ok(cozinha);
+            return ResponseEntity.ok(assembler.toModel(cozinha));
+
         } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> adicionar(@RequestBody CozinhaInput input) {
+    public ResponseEntity<?> adicionar(@RequestBody CozinhaRequest cozinhaRequest) {
         try {
-            Cozinha cozinha = new Cozinha(new CozinhaId(UUID.randomUUID()), input.getNome());
+            Cozinha cozinha = disassembler.toDomain(cozinhaRequest);
             cozinhaService.adicionar(cozinha);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
@@ -47,11 +50,11 @@ public class CozinhaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> atualizar(@PathVariable UUID id, @RequestBody Cozinha cozinha) {
+    public ResponseEntity<?> atualizar(@PathVariable UUID id, @RequestBody CozinhaRequest cozinhaRequest) {
         try {
-            Cozinha cozinhaAtualiza = new Cozinha(new CozinhaId(id), cozinha.getNome());
-            cozinhaService.atualizar(cozinhaAtualiza);
-            return ResponseEntity.ok(cozinhaAtualiza);
+            Cozinha cozinha = disassembler.toDomain(id, cozinhaRequest);
+            cozinhaService.atualizar(cozinha);
+            return ResponseEntity.ok().build();
 
         } catch (EntidadeNaoEncontradaException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

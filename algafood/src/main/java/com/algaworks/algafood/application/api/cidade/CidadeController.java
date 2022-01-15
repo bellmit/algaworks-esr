@@ -7,7 +7,6 @@ import com.algaworks.algafood.domain.model.cidade.Cidade;
 import com.algaworks.algafood.domain.model.cidade.CidadeId;
 import com.algaworks.algafood.domain.model.cidade.CidadeService;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,6 +69,18 @@ public class CidadeController {
 
         } catch (PropriedadeInvalidaException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> remover(@PathVariable UUID id) {
+        try {
+            CidadeId cidadeId = new CidadeId(id);
+            cidadeService.remover(cidadeId);
+            return ResponseEntity.noContent().build();
+
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 

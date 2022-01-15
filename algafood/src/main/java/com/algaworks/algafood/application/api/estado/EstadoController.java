@@ -66,4 +66,19 @@ public class EstadoController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> remover(@PathVariable UUID id) {
+        try {
+            EstadoId estadoId = new EstadoId(id);
+            estadoService.remover(estadoId);
+            return ResponseEntity.noContent().build();
+
+        } catch (EntidadeNaoEncontradaException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+
+        } catch (EntidadeEmUsoException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+        }
+    }
+
 }

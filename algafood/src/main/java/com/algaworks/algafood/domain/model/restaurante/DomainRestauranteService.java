@@ -54,7 +54,7 @@ public class DomainRestauranteService implements RestauranteService {
     @Override
     public void remover(RestauranteId restauranteId) {
 
-        if (this.restauranteRepository.existeRestauranteComId(restauranteId)) {
+        if (!this.restauranteRepository.existeRestauranteComId(restauranteId)) {
             throw new RestauranteNaoEncontradaException(restauranteId.getId());
         }
 
