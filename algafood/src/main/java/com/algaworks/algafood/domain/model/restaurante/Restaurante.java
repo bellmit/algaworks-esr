@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.model.restaurante;
 
 import com.algaworks.algafood.domain.exception.PropriedadeInvalidaException;
 import com.algaworks.algafood.domain.model.cozinha.CozinhaId;
+import com.algaworks.algafood.domain.model.endereco.Endereco;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamento;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoId;
 import lombok.EqualsAndHashCode;
@@ -21,6 +22,7 @@ public class Restaurante {
     private BigDecimal taxaFrete;
     private CozinhaId cozinhaId;
     private Set<FormaPagamentoId> formaPagamentos;
+    private Endereco endereco;
 
     public Restaurante(RestauranteId restauranteId, String nome, BigDecimal taxaFrete, CozinhaId cozinhaId) {
         this();
@@ -35,15 +37,17 @@ public class Restaurante {
     }
 
     public void adicionarFormaPagamento(FormaPagamentoId formaPagamentoId) {
-        if(formaPagamentoId == null) {
-            throw new PropriedadeInvalidaException(Restaurante.class, "formaPagamentos", "deve ser informado");
+        if (formaPagamentoId != null) {
+            this.formaPagamentos.add(formaPagamentoId);
         }
+    }
 
-        this.formaPagamentos.add(formaPagamentoId);
+    public void adicionarEndereco(Endereco endereco) {
+        this.setEndereco(endereco);
     }
 
     private void setRestauranteId(RestauranteId restauranteId) {
-        if(restauranteId == null) {
+        if (restauranteId == null) {
             throw new PropriedadeInvalidaException(Restaurante.class, "restauranteId", "deve ser informado");
         }
 
@@ -51,7 +55,7 @@ public class Restaurante {
     }
 
     private void setNome(String nome) {
-        if(!StringUtils.hasText(nome)) {
+        if (!StringUtils.hasText(nome)) {
             throw new PropriedadeInvalidaException(Restaurante.class, "nome", "deve ser informado");
         }
 
@@ -59,7 +63,7 @@ public class Restaurante {
     }
 
     private void setTaxaFrete(BigDecimal taxaFrete) {
-        if(taxaFrete == null || taxaFrete.equals(BigDecimal.ZERO)) {
+        if (taxaFrete == null || taxaFrete.equals(BigDecimal.ZERO)) {
             throw new PropriedadeInvalidaException(Restaurante.class, "taxaFrete", "deve ser maior que zero");
         }
 
@@ -67,10 +71,17 @@ public class Restaurante {
     }
 
     private void setCozinhaId(CozinhaId cozinhaId) {
-        if(cozinhaId == null) {
+        if (cozinhaId == null) {
             throw new PropriedadeInvalidaException(Restaurante.class, "cozinhaId", "deve ser informado");
         }
 
         this.cozinhaId = cozinhaId;
+    }
+
+    private void setEndereco(Endereco endereco) {
+        if (endereco == null) {
+           throw new PropriedadeInvalidaException(Restaurante.class, "endereco", "deve ser informado");
+        }
+        this.endereco = endereco;
     }
 }

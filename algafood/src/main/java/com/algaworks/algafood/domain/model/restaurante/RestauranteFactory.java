@@ -1,6 +1,8 @@
 package com.algaworks.algafood.domain.model.restaurante;
 
+import com.algaworks.algafood.domain.model.cidade.CidadeId;
 import com.algaworks.algafood.domain.model.cozinha.CozinhaId;
+import com.algaworks.algafood.domain.model.endereco.Endereco;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoId;
 
 import java.math.BigDecimal;
@@ -16,18 +18,43 @@ public class RestauranteFactory {
         this.restaurante = restaurante;
     }
 
-    public static RestauranteFactory builder(UUID restauranteId, String nome, BigDecimal taxaFrete, UUID cidadeId) {
+    public static RestauranteFactory builder(UUID restauranteId, String nome, BigDecimal taxaFrete, UUID cozinhaId) {
         Restaurante novoRestaurante = new Restaurante(
                 new RestauranteId(restauranteId),
                 nome,
                 taxaFrete,
-                new CozinhaId(cidadeId)
+                new CozinhaId(cozinhaId)
         );
         return new RestauranteFactory(novoRestaurante);
     }
 
-    public RestauranteFactory adicionarFormasPagamentos(List<UUID> ids) {
-        ids.forEach( id -> this.restaurante.adicionarFormaPagamento(new FormaPagamentoId(id)));
+    public RestauranteFactory adicionarFormasPagamento(List<UUID> ids) {
+        ids.forEach(id -> this.restaurante.adicionarFormaPagamento(new FormaPagamentoId(id)));
+        return this;
+    }
+
+    public RestauranteFactory adicionarEndereco(Endereco endereco) {
+        this.restaurante.adicionarEndereco(endereco);
+        return this;
+    }
+
+    public RestauranteFactory adicionarEndereco(
+            String cep,
+            String logradouro,
+            String numero,
+            String complemento,
+            String bairro,
+            UUID cidadeId
+    ) {
+        Endereco endereco = new Endereco(
+                cep,
+                logradouro,
+                numero,
+                complemento,
+                bairro,
+                new CidadeId(cidadeId)
+        );
+        this.restaurante.adicionarEndereco(endereco);
         return this;
     }
 
