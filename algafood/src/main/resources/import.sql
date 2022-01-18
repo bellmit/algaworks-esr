@@ -33,7 +33,6 @@ insert restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atuali
 insert restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)  values (@restauranteTuktuk, 'Tuk Tuk Comida Indiana', 15, @cozinhaIndiana, utc_timestamp, utc_timestamp);
 
 
-
 SET @cartaoCredito = unhex(replace(uuid(), '-', ''));
 SET @cartaoDebito = unhex(replace(uuid(), '-', ''));
 SET @dinheiro = unhex(replace(uuid(), '-', ''));

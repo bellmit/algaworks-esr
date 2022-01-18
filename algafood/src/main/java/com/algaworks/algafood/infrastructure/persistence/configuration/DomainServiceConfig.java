@@ -15,6 +15,9 @@ import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoService;
 import com.algaworks.algafood.domain.model.permissao.DomainPermissaoService;
 import com.algaworks.algafood.domain.model.permissao.PermissaoRepository;
 import com.algaworks.algafood.domain.model.permissao.PermissaoService;
+import com.algaworks.algafood.domain.model.produto.DomainProdutoService;
+import com.algaworks.algafood.domain.model.produto.ProdutoRepository;
+import com.algaworks.algafood.domain.model.produto.ProdutoService;
 import com.algaworks.algafood.domain.model.restaurante.DomainRestauranteService;
 import com.algaworks.algafood.domain.model.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.model.restaurante.RestauranteService;
@@ -55,5 +58,10 @@ public class DomainServiceConfig {
             CozinhaRepository cozinhaRepository
     ) {
         return new DomainRestauranteService(restauranteRepository, cozinhaRepository);
+    }
+
+    @Bean
+    public ProdutoService produtoService(ProdutoRepository produtoRepository) {
+        return new DomainProdutoService(produtoRepository);
     }
 }
