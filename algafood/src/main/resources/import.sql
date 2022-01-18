@@ -28,9 +28,9 @@ SET @retauranteThaiGourmet = unhex(replace(uuid(), '-', ''));
 SET @restauranteThaiDelivery = unhex(replace(uuid(), '-', ''));
 SET @restauranteTuktuk = unhex(replace(uuid(), '-', ''));
 
-insert restaurante (id, nome, taxa_frete, cozinha_id, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro)  values (@retauranteThaiGourmet, 'Thai Gourmet', 10, @cozinhaTailandesa, @cidadeUberlandia, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
-insert restaurante (id, nome, taxa_frete, cozinha_id)  values (@restauranteThaiDelivery, 'Thai Delivery', 9.50, @cozinhaTailandesa);
-insert restaurante (id, nome, taxa_frete, cozinha_id)  values (@restauranteTuktuk, 'Tuk Tuk Comida Indiana', 15, @cozinhaIndiana);
+insert restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao, endereco_cidade_id, endereco_cep, endereco_logradouro, endereco_numero, endereco_bairro)  values (@retauranteThaiGourmet, 'Thai Gourmet', 10, @cozinhaTailandesa, utc_timestamp, utc_timestamp, @cidadeUberlandia, '38400-999', 'Rua João Pinheiro', '1000', 'Centro');
+insert restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)  values (@restauranteThaiDelivery, 'Thai Delivery', 9.50, @cozinhaTailandesa, utc_timestamp, utc_timestamp);
+insert restaurante (id, nome, taxa_frete, cozinha_id, data_cadastro, data_atualizacao)  values (@restauranteTuktuk, 'Tuk Tuk Comida Indiana', 15, @cozinhaIndiana, utc_timestamp, utc_timestamp);
 
 
 

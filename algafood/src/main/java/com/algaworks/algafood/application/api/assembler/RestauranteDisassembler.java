@@ -38,7 +38,10 @@ public class RestauranteDisassembler {
                         restaurante.getRestauranteId().getId(),
                         restauranteRequest.getNome(),
                         restauranteRequest.getTaxaFrete(),
-                        restauranteRequest.getCozinhaId())
+                        restauranteRequest.getCozinhaId(),
+                        restaurante.getDataCadastro(),
+                        restaurante.getDataAtualizacao()
+                        )
                 .adicionarFormasPagamento(ids)
                 .adicionarEndereco(restaurante.getEndereco())
                 .build();

@@ -48,6 +48,7 @@ public class DomainRestauranteService implements RestauranteService {
             throw new PropriedadeInvalidaException(Restaurante.class, "cozinhaId", "invalida");
         }
 
+        restaurante.atualizarDataAtualizacao();
         this.restauranteRepository.atualizar(restaurante);
     }
 

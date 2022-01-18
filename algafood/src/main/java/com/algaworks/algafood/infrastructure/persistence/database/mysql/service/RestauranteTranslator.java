@@ -33,6 +33,8 @@ public class RestauranteTranslator {
         restauranteModel.setFormaPagamentos(
                 formaPagmentoTranslator.toCollectionFormaPagamentoModel(restaurante.getFormaPagamentos())
         );
+        restauranteModel.setDataCadastro(restaurante.getDataCadastro());
+        restauranteModel.setDataAtualizacao(restaurante.getDataAtualizacao());
 
         if (restaurante.getEndereco() != null) {
             restauranteModel.setEndereco(enderecoTranslator.toEnderecoModel(restaurante.getEndereco()));
@@ -52,7 +54,9 @@ public class RestauranteTranslator {
                 restauranteModel.getId(),
                 restauranteModel.getNome(),
                 restauranteModel.getTaxaFrete(),
-                restauranteModel.getCozinha().getId()
+                restauranteModel.getCozinha().getId(),
+                restauranteModel.getDataCadastro(),
+                restauranteModel.getDataAtualizacao()
         );
 
         if (!ids.isEmpty()) {

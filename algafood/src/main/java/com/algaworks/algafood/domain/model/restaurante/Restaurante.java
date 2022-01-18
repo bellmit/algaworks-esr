@@ -10,6 +10,7 @@ import lombok.Getter;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +24,8 @@ public class Restaurante {
     private CozinhaId cozinhaId;
     private Set<FormaPagamentoId> formaPagamentos;
     private Endereco endereco;
+    private LocalDateTime dataCadastro;
+    private LocalDateTime dataAtualizacao;
 
     public Restaurante(RestauranteId restauranteId, String nome, BigDecimal taxaFrete, CozinhaId cozinhaId) {
         this();
@@ -32,8 +35,23 @@ public class Restaurante {
         this.setCozinhaId(cozinhaId);
     }
 
+    public Restaurante(
+            RestauranteId restauranteId,
+            String nome,
+            BigDecimal taxaFrete,
+            CozinhaId cozinhaId,
+            LocalDateTime dataCadastro,
+            LocalDateTime dataAtualizacao
+    ) {
+        this(restauranteId, nome, taxaFrete, cozinhaId);
+        this.setDataCadastro(dataCadastro);
+        this.setDataAtualizacao(dataAtualizacao);
+    }
+
     private Restaurante() {
         this.formaPagamentos = new HashSet<>();
+        this.dataCadastro = LocalDateTime.now();
+        this.dataAtualizacao = LocalDateTime.now();
     }
 
     public void adicionarFormaPagamento(FormaPagamentoId formaPagamentoId) {
@@ -44,6 +62,10 @@ public class Restaurante {
 
     public void adicionarEndereco(Endereco endereco) {
         this.setEndereco(endereco);
+    }
+
+    public void atualizarDataAtualizacao() {
+        this.setDataAtualizacao(LocalDateTime.now());
     }
 
     private void setRestauranteId(RestauranteId restauranteId) {
@@ -80,8 +102,23 @@ public class Restaurante {
 
     private void setEndereco(Endereco endereco) {
         if (endereco == null) {
-           throw new PropriedadeInvalidaException(Restaurante.class, "endereco", "deve ser informado");
+            throw new PropriedadeInvalidaException(Restaurante.class, "endereco", "deve ser informado");
         }
         this.endereco = endereco;
     }
+
+    private void setDataCadastro(LocalDateTime dataCadastro) {
+        if (dataCadastro == null) {
+            throw new PropriedadeInvalidaException(Restaurante.class, "dataCadastro", "deve ser informado");
+        }
+        this.dataCadastro = dataCadastro;
+    }
+
+    private void setDataAtualizacao(LocalDateTime dataAtualizacao) {
+        if (dataAtualizacao == null) {
+            throw new PropriedadeInvalidaException(Restaurante.class, "dataAtualizacao", "deve ser informado");
+        }
+        this.dataAtualizacao = dataAtualizacao;
+    }
+
 }

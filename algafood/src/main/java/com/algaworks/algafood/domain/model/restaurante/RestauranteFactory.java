@@ -6,6 +6,7 @@ import com.algaworks.algafood.domain.model.endereco.Endereco;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoId;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -18,12 +19,21 @@ public class RestauranteFactory {
         this.restaurante = restaurante;
     }
 
-    public static RestauranteFactory builder(UUID restauranteId, String nome, BigDecimal taxaFrete, UUID cozinhaId) {
+    public static RestauranteFactory builder(
+            UUID restauranteId,
+            String nome,
+            BigDecimal taxaFrete,
+            UUID cozinhaId,
+            LocalDateTime dataCadastro,
+            LocalDateTime dataAtualizacao) {
+
         Restaurante novoRestaurante = new Restaurante(
                 new RestauranteId(restauranteId),
                 nome,
                 taxaFrete,
-                new CozinhaId(cozinhaId)
+                new CozinhaId(cozinhaId),
+                dataCadastro,
+                dataAtualizacao
         );
         return new RestauranteFactory(novoRestaurante);
     }

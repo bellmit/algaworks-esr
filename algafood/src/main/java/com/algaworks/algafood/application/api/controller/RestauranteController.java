@@ -67,7 +67,7 @@ public class RestauranteController {
             Restaurante restauranteEditado = disassembler.copyToDomain(request, restauranteAtual);
 
             restauranteService.atualizar(restauranteEditado);
-            return ResponseEntity.status(HttpStatus.OK).build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
         } catch (EntidadeEmUsoException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());

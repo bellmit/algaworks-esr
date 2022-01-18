@@ -5,10 +5,13 @@ import com.algaworks.algafood.infrastructure.persistence.database.mysql.model.En
 import com.algaworks.algafood.infrastructure.persistence.database.mysql.model.FormaPagamentoModel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -36,6 +39,14 @@ public class RestauranteModel {
 
     @Embedded
     private EnderecoModel endereco;
+
+    @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataCadastro;
+
+    @UpdateTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
+    private LocalDateTime dataAtualizacao;
 
     @ManyToMany
     @JoinTable(name = "restaurante_forma_pagamento",
