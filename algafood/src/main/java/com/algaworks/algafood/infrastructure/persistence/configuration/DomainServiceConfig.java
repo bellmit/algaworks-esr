@@ -12,6 +12,9 @@ import com.algaworks.algafood.domain.model.estado.EstadoService;
 import com.algaworks.algafood.domain.model.formapagamento.DomainFormaPagamentoService;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoService;
+import com.algaworks.algafood.domain.model.grupo.DomainGrupoService;
+import com.algaworks.algafood.domain.model.grupo.GrupoRepository;
+import com.algaworks.algafood.domain.model.grupo.GrupoService;
 import com.algaworks.algafood.domain.model.permissao.DomainPermissaoService;
 import com.algaworks.algafood.domain.model.permissao.PermissaoRepository;
 import com.algaworks.algafood.domain.model.permissao.PermissaoService;
@@ -21,6 +24,9 @@ import com.algaworks.algafood.domain.model.produto.ProdutoService;
 import com.algaworks.algafood.domain.model.restaurante.DomainRestauranteService;
 import com.algaworks.algafood.domain.model.restaurante.RestauranteRepository;
 import com.algaworks.algafood.domain.model.restaurante.RestauranteService;
+import com.algaworks.algafood.domain.model.usuario.DomainUsuarioService;
+import com.algaworks.algafood.domain.model.usuario.UsuarioRepository;
+import com.algaworks.algafood.domain.model.usuario.UsuarioService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -63,5 +69,15 @@ public class DomainServiceConfig {
     @Bean
     public ProdutoService produtoService(ProdutoRepository produtoRepository) {
         return new DomainProdutoService(produtoRepository);
+    }
+
+    @Bean
+    public GrupoService grupoService(GrupoRepository grupoRepository) {
+        return new DomainGrupoService(grupoRepository);
+    }
+
+    @Bean
+    public UsuarioService usuarioService(UsuarioRepository usuarioRepository) {
+        return new DomainUsuarioService(usuarioRepository);
     }
 }
