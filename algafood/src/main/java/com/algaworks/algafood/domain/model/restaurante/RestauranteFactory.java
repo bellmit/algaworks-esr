@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.model.cidade.CidadeId;
 import com.algaworks.algafood.domain.model.cozinha.CozinhaId;
 import com.algaworks.algafood.domain.model.endereco.Endereco;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoId;
+import com.algaworks.algafood.domain.model.produto.ProdutoId;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -40,6 +41,11 @@ public class RestauranteFactory {
 
     public RestauranteFactory adicionarFormasPagamento(List<UUID> ids) {
         ids.forEach(id -> this.restaurante.adicionarFormaPagamento(new FormaPagamentoId(id)));
+        return this;
+    }
+
+    public RestauranteFactory adicionarProdutos(List<UUID> ids) {
+        ids.forEach(id -> this.restaurante.adicionarProduto(new ProdutoId(id)));
         return this;
     }
 

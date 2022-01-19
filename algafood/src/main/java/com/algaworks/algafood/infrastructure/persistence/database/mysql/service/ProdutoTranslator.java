@@ -7,6 +7,10 @@ import com.algaworks.algafood.infrastructure.persistence.database.mysql.model.Pr
 import com.algaworks.algafood.infrastructure.persistence.database.mysql.model.RestauranteModel;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
 public class ProdutoTranslator {
 
@@ -23,6 +27,15 @@ public class ProdutoTranslator {
         produtoModel.setRestaurante(restauranteModel);
 
         return produtoModel;
+    }
+
+    public Set<ProdutoModel> toCollectionProdutoModel(Set<ProdutoId> ids) {
+        return ids.stream()
+                .map(id -> {
+                    ProdutoModel produtoModel = new ProdutoModel();
+                    produtoModel.setId(id.getId());
+                    return produtoModel;
+                }).collect(Collectors.toSet());
     }
 
     public Produto toProduto(ProdutoModel produtoModel) {

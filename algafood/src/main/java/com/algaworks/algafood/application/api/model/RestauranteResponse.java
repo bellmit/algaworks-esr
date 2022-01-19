@@ -16,4 +16,5 @@ public class RestauranteResponse {
     private UUID cozinhaId;
     private List<UUID> formasPagamento;
     private EnderecoResponse endereco;
+    private List<UUID> produtos;
 }

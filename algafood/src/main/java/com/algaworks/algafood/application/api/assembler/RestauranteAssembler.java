@@ -22,6 +22,10 @@ public class RestauranteAssembler {
                 .map(formaPagamentoId -> formaPagamentoId.getId())
                 .collect(Collectors.toList());
 
+        List<UUID> produtosId = restaurante.getProdutos().stream()
+                .map(produtoId -> produtoId.getId())
+                .collect(Collectors.toList());
+
         EnderecoResponse enderecoResponse = restaurante.getEndereco() != null ?
                 enderecoAssembler.toModel(restaurante.getEndereco()) : EnderecoResponse.builder().build();
 
@@ -32,6 +36,7 @@ public class RestauranteAssembler {
                 .cozinhaId(restaurante.getCozinhaId().getId())
                 .formasPagamento(formasPagamentoId)
                 .endereco(enderecoResponse)
+                .produtos(produtosId)
                 .build();
     }
 

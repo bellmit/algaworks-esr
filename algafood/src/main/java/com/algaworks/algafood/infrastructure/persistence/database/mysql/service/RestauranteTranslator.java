@@ -20,6 +20,7 @@ public class RestauranteTranslator {
 
     private FormaPagmentoTranslator formaPagmentoTranslator;
     private EnderecoTranslator enderecoTranslator;
+    private ProdutoTranslator produtoTranslator;
 
     public RestauranteModel toRestauranteModelFromRestaurante(Restaurante restaurante) {
         CozinhaModel cozinhaModel = new CozinhaModel();
@@ -40,11 +41,19 @@ public class RestauranteTranslator {
             restauranteModel.setEndereco(enderecoTranslator.toEnderecoModel(restaurante.getEndereco()));
         }
 
+        restauranteModel.setProdutos(
+                produtoTranslator.toCollectionProdutoModel(restaurante.getProdutos())
+        );
+
         return restauranteModel;
     }
 
     public Restaurante toRestauranteFromRestauranteModel(RestauranteModel restauranteModel) {
-        List<UUID> ids = restauranteModel.getFormaPagamentos().stream()
+        List<UUID> restaurantesIds = restauranteModel.getFormaPagamentos().stream()
+                .map(model -> model.getId())
+                .collect(Collectors.toList());
+
+        List<UUID> produtosIds = restauranteModel.getProdutos().stream()
                 .map(model -> model.getId())
                 .collect(Collectors.toList());
 
@@ -59,8 +68,8 @@ public class RestauranteTranslator {
                 restauranteModel.getDataAtualizacao()
         );
 
-        if (!ids.isEmpty()) {
-            factory.adicionarFormasPagamento(ids);
+        if (!restaurantesIds.isEmpty()) {
+            factory.adicionarFormasPagamento(restaurantesIds);
         }
 
         if (endereco != null) {
@@ -72,6 +81,10 @@ public class RestauranteTranslator {
                     endereco.getBairro(),
                     endereco.getCidade().getId()
             );
+        }
+
+        if(!produtosIds.isEmpty()) {
+            factory.adicionarProdutos(produtosIds);
         }
 
         return factory.build();

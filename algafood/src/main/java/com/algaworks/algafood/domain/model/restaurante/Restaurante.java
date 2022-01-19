@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.model.cozinha.CozinhaId;
 import com.algaworks.algafood.domain.model.endereco.Endereco;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamento;
 import com.algaworks.algafood.domain.model.formapagamento.FormaPagamentoId;
+import com.algaworks.algafood.domain.model.produto.ProdutoId;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
@@ -26,6 +27,7 @@ public class Restaurante {
     private Endereco endereco;
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizacao;
+    private Set<ProdutoId> produtos;
 
     public Restaurante(RestauranteId restauranteId, String nome, BigDecimal taxaFrete, CozinhaId cozinhaId) {
         this();
@@ -52,6 +54,13 @@ public class Restaurante {
         this.formaPagamentos = new HashSet<>();
         this.dataCadastro = LocalDateTime.now();
         this.dataAtualizacao = LocalDateTime.now();
+        this.produtos = new HashSet<>();
+    }
+
+    public void adicionarProduto(ProdutoId produtoId) {
+        if(produtoId != null) {
+            this.produtos.add(produtoId);
+        }
     }
 
     public void adicionarFormaPagamento(FormaPagamentoId formaPagamentoId) {
