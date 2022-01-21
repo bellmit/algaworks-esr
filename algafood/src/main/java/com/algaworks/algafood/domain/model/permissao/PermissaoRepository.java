@@ -1,10 +1,7 @@
 package com.algaworks.algafood.domain.model.permissao;
 
-import com.algaworks.algafood.domain.model.permissao.Permissao;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 public interface PermissaoRepository {
     List<Permissao> listar();
