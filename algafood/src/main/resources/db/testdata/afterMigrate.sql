@@ -1,3 +1,39 @@
+delete
+from grupo_permissao;
+
+delete
+from permissao;
+
+delete
+from produto;
+
+delete
+from restaurante_forma_pagamento;
+
+delete
+from forma_pagamento;
+
+delete
+from restaurante;
+
+delete
+from cidade;
+
+delete
+from cozinha;
+
+delete
+from estado;
+
+delete
+from usuario_grupo;
+
+delete
+from grupo;
+
+delete
+from usuario;
+
 SET @cozinhaTailandesa = unhex(replace(uuid(), '-', ''));
 SET @cozinhaIndiana = unhex(replace(uuid(), '-', ''));
 SET @cozinhaArgentina = unhex(replace(uuid(), '-', ''));
